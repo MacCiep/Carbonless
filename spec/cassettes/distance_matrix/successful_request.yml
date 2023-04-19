@@ -1,0 +1,75 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://maps.googleapis.com/maps/api/distancematrix/json?destinations=52.43002147996739,19.45364903980195&key=AIzaSyBe1iMVLDFlrFzEN4yB7FFEVrxwdj7V3Nc&mode=driving&origins=51.729148231285386,19.495436984167636&units=metric
+    body:
+      encoding: UTF-8
+      string: ''
+    headers:
+      Content-Type:
+      - application/json
+      User-Agent:
+      - Faraday v2.7.4
+      Content-Length:
+      - '0'
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Wed, 19 Apr 2023 06:20:13 GMT
+      Pragma:
+      - no-cache
+      Expires:
+      - Fri, 01 Jan 1990 00:00:00 GMT
+      Cache-Control:
+      - no-cache, must-revalidate
+      Vary:
+      - Accept-Language
+      Server:
+      - mafe
+      Content-Length:
+      - '562'
+      X-Xss-Protection:
+      - '0'
+      X-Frame-Options:
+      - SAMEORIGIN
+      Server-Timing:
+      - gfet4t7; dur=99
+      Alt-Svc:
+      - h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+    body:
+      encoding: UTF-8
+      string: |
+        {
+           "destination_addresses" : [ "Zamkowa 31, 09-500 Gostynin, Poland" ],
+           "origin_addresses" : [ "Gabrieli Zapolskiej 70A, 93-256 \u0141\u00f3d\u017a, Poland" ],
+           "rows" : [
+              {
+                 "elements" : [
+                    {
+                       "distance" : {
+                          "text" : "95.3 km",
+                          "value" : 95355
+                       },
+                       "duration" : {
+                          "text" : "1 hour 12 mins",
+                          "value" : 4318
+                       },
+                       "status" : "OK"
+                    }
+                 ]
+              }
+           ],
+           "status" : "OK"
+        }
+  recorded_at: Wed, 19 Apr 2023 06:20:13 GMT
+recorded_with: VCR 6.1.0

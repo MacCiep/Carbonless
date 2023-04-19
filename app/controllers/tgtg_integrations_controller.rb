@@ -13,7 +13,7 @@ class TgtgIntegrationsController < ApplicationController
     result = TgtgMicroservice::Requests::AddOrderPoints.new(current_user).call
     if result.present?
       current_user.update(points: current_user.points + result)
-      render json: { points: result, added_points: result }, status: 200
+      render json: { points: current_user.points, added_points: result }, status: 200
     else
       render json: { message: 'Something went wrong, please try another time' }, status: 422
     end

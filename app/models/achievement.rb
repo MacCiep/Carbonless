@@ -1,3 +1,14 @@
+# == Schema Information
+#
+# Table name: achievements
+#
+#  id            :bigint           not null, primary key
+#  points        :integer
+#  scope_of_days :integer
+#  script        :string           not null
+#  title         :string           not null
+#  type          :integer
+#
 class Achievement < ApplicationRecord
   has_many :users, through: :user_achievements
 

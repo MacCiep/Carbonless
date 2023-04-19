@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_03_31_113656) do
+ActiveRecord::Schema.define(version: 2023_04_18_100548) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -43,6 +43,12 @@ ActiveRecord::Schema.define(version: 2023_03_31_113656) do
     t.index ["jti"], name: "index_jwt_denylist_on_jti"
   end
 
+  create_table "machines", force: :cascade do |t|
+    t.string "uuid", null: false
+    t.string "secret", null: false
+    t.integer "service_type", null: false
+  end
+
   create_table "prizes", force: :cascade do |t|
     t.string "title", null: false
     t.integer "price", null: false
@@ -51,11 +57,15 @@ ActiveRecord::Schema.define(version: 2023_03_31_113656) do
 
   create_table "travel_sessions", force: :cascade do |t|
     t.bigint "user_id"
-    t.integer "start_station", null: false
-    t.integer "end_station"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "travel_tool"
+    t.string "start_longitude"
+    t.string "start_latitude"
+    t.string "end_longitude"
+    t.string "end_latitude"
+    t.decimal "car_distance"
+    t.boolean "active"
+    t.bigint "machine_id"
     t.index ["user_id"], name: "index_travel_sessions_on_user_id"
   end
 
