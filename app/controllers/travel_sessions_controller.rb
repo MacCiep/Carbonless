@@ -8,7 +8,7 @@ class TravelSessionsController < ApplicationController
 
     travel_session = current_user.travel_sessions.build(session_build_attributes)
     if travel_session.save
-      render json: travel_session, status: :created
+      render json: travel_session, status: 202
     else
       render json: travel_session.errors.full_messages, status: :unprocessable_entity
     end
@@ -29,7 +29,12 @@ class TravelSessionsController < ApplicationController
                       points: session_results[:points],
                       carbon_saved: session_results[:carbon_saved]).call
 
-      render json: { carbon_saved: current_user.total_carbon_saved.to_f.round(2), points: current_user.points }
+      render json: {
+        carbon_saved: current_user.total_carbon_saved.to_f.round(2),
+        points: current_user.points,
+        session_carbon_saved: session_results[:carbon_saved],
+        session_points_saved: session_results[:points]
+      }
     else
       render json: @travel_session.errors.full_messages, status: 422
     end
