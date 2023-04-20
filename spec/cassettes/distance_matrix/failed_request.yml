@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: post
-    uri: https://maps.googleapis.com/maps/api/distancematrix/json?destinations=1.1241,400.31311&key=AIzaSyBe1iMVLDFlrFzEN4yB7FFEVrxwdj7V3Nc&mode=driving&origins=100.323131,250.31124&units=metric
+    uri: https://maps.googleapis.com/maps/api/distancematrix/json?destinations=1.1241,400.31311&key=google_api_key&mode=driving&origins=100.323131,250.31124&units=metric
     body:
       encoding: UTF-8
       string: ''

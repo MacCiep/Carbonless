@@ -4,7 +4,7 @@ module DistanceMatrix
       STATIC_PARAMS = {
         mode: 'driving',
         units: 'metric',
-        key: ENV['GOOGLE_API_KEY']
+        key: Rails.env.test? ? 'google_api_key' : ENV['GOOGLE_API_KEY']
       }.freeze
 
       TRAVEL_SESSION_FIELDS_MAPPER = {
