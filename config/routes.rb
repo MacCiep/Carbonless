@@ -7,7 +7,7 @@ Rails.application.routes.draw do
   get '/tgtg_integration', to: 'tgtg_integrations#show'
   get '/carbon_savings', to: 'carbon_savings#show'
   patch '/update_travel_sessions', to: 'travel_sessions#update'
-  delete '/delete_travel_sessions', to: 'travel_sessions#delete'
+  delete '/delete_travel_sessions', to: 'travel_sessions#destroy'
   resources :prizes
   resources :users_prizes
   post '/purchases', to: 'purchases#create'

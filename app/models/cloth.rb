@@ -1,0 +1,1 @@
+class Cloth < Purchase; end

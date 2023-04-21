@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_04_18_100548) do
+ActiveRecord::Schema.define(version: 2023_04_21_071534) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -53,6 +53,15 @@ ActiveRecord::Schema.define(version: 2023_04_18_100548) do
     t.string "title", null: false
     t.integer "price", null: false
     t.integer "duration", null: false
+  end
+
+  create_table "purchases", force: :cascade do |t|
+    t.bigint "machine_id"
+    t.bigint "user_id"
+    t.integer "points", default: 0, null: false
+    t.string "type", default: "0", null: false
+    t.index ["machine_id"], name: "index_purchases_on_machine_id"
+    t.index ["user_id"], name: "index_purchases_on_user_id"
   end
 
   create_table "travel_sessions", force: :cascade do |t|
@@ -103,4 +112,6 @@ ActiveRecord::Schema.define(version: 2023_04_18_100548) do
     t.index ["user_id"], name: "index_users_prizes_on_user_id"
   end
 
+  add_foreign_key "purchases", "machines"
+  add_foreign_key "purchases", "users"
 end
