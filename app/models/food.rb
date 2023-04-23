@@ -1,1 +1,0 @@
-class Food < Purchase; end

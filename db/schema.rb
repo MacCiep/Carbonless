@@ -59,7 +59,9 @@ ActiveRecord::Schema.define(version: 2023_04_21_071534) do
     t.bigint "machine_id"
     t.bigint "user_id"
     t.integer "points", default: 0, null: false
-    t.string "type", default: "0", null: false
+    t.integer "purchase_type", default: 1, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["machine_id"], name: "index_purchases_on_machine_id"
     t.index ["user_id"], name: "index_purchases_on_user_id"
   end

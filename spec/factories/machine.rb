@@ -5,15 +5,15 @@ FactoryBot.define do
     service_type { :travel }
 
     trait :travel do
-      service_type { :travel }
+      service_type { 0 }
     end
 
-    trait :clothes do
-      service_type { :clothes }
+    trait :cloth do
+      service_type { 1 }
     end
 
     trait :food do
-      service_type { :food }
+      service_type { 2 }
     end
   end
 end

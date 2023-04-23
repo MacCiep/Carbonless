@@ -1,12 +1,12 @@
 require 'rails_helper'
 
-RSpec.describe TravelSessions::Verificator, type: :service do
+RSpec.describe TravelSessions::Validator, type: :service do
   let!(:user) { create(:user) }
   let!(:machine) { create(:machine, :travel) }
   let!(:travel_session) { create(:travel_session, :inactive, user: user, machine: machine) }
 
-  shared_examples 'verificator' do
-    subject { verificator.call }
+  shared_examples 'validator' do
+    subject { validator.call }
 
     context 'when verification is in correct time box' do
       let!(:expires) do ActiveSupport::MessageEncryptor.new(machine.secret).encrypt_and_sign(DateTime.now + 10.minutes) end
@@ -29,17 +29,17 @@ RSpec.describe TravelSessions::Verificator, type: :service do
 
   describe '#call' do
     let!(:machine_params) { { uuid: machine.uuid, expires: expires } }
-    let!(:verificator) { TravelSessions::Verificator.new(machine_params, travel_session) }
-    subject { verificator.call }
+    let!(:validator) { TravelSessions::Validator.new(machine_params, travel_session) }
+    subject { validator.call }
 
     describe 'when current session is not present' do
       let!(:travel_session) { nil }
 
-      it_behaves_like 'verificator'
+      it_behaves_like 'validator'
     end
 
     describe 'when current session is present' do
-      it_behaves_like 'verificator'
+      it_behaves_like 'validator'
 
       context 'when verification time is correct' do
         let!(:expires) do ActiveSupport::MessageEncryptor.new(machine.secret).encrypt_and_sign(DateTime.now + 90.minutes) end

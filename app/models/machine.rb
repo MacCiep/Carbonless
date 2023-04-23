@@ -11,7 +11,7 @@ class Machine < ApplicationRecord
   validates :uuid, :secret, :service_type, presence: true
   enum service_type: {
     travel: 0,
-    clothes: 1,
+    cloth: 1,
     food: 2
   }
 end

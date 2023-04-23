@@ -4,7 +4,8 @@ class CreatePurchases < ActiveRecord::Migration[5.2]
       t.references :machine, foreign_key: true
       t.references :user, foreign_key: true
       t.integer :points, null: false, default: 0
-      t.string :type, null: false, default: 0
+      t.integer :purchase_type, null: false, default: 1
+      t.timestamps
     end
   end
 end

@@ -4,7 +4,7 @@ class TravelSessionsController < ApplicationController
   def create
     render json: { message: 'session is in progress' }, status: :forbidden and return if current_user.travel_sessions.active.present?
 
-    render status: 422 and return unless TravelSessions::Verificator.new(travel_session_params).call
+    render status: 422 and return unless TravelSessions::Validator.new(travel_session_params).call
 
     travel_session = current_user.travel_sessions.build(session_build_attributes)
     if travel_session.save
@@ -15,7 +15,7 @@ class TravelSessionsController < ApplicationController
   end
 
   def update
-    render status: 422 and return unless TravelSessions::Verificator.new(travel_session_params, @travel_session).call
+    render status: 422 and return unless TravelSessions::Validator.new(travel_session_params, @travel_session).call
 
     @travel_session.assign_attributes(travel_session_end_position_params)
     @car_distance = DistanceMatrix::Requests::CalculateDistance.new(current_user, @travel_session).call
