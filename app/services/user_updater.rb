@@ -1,5 +1,5 @@
 class UserUpdater
-  def initialize(user:, points:, carbon_saved:)
+  def initialize(user:, points: 0, carbon_saved: 0)
     @user = user
     @points = points
     @carbon_saved = carbon_saved

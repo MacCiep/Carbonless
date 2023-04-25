@@ -13,7 +13,7 @@ RSpec.describe DistanceMatrix::Requests::CalculateDistance, type: :service do
 
   describe '#call' do
     context 'when origins and destinations are correct', vcr: { cassette_name: 'distance_matrix/successful_request' } do
-      let(:request) { described_class.new(user, travel_session) }
+      let(:request) { described_class.new(travel_session) }
       subject { request.call }
 
       it 'returns correct distance' do
@@ -22,7 +22,7 @@ RSpec.describe DistanceMatrix::Requests::CalculateDistance, type: :service do
     end
 
     context 'when origins and destinations are incorrect', vcr: { cassette_name: 'distance_matrix/failed_request' } do
-      let(:request) { described_class.new(user, travel_session) }
+      let(:request) { described_class.new(travel_session) }
       subject { request.call }
 
       before do

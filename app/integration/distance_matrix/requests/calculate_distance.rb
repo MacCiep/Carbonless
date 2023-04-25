@@ -2,14 +2,13 @@ module DistanceMatrix
   module Requests
     class CalculateDistance
 
-      attr_reader :user, :travel_session
+      attr_reader :travel_session
 
       include DistanceMatrix::Helpers::QueryParamsHelper
 
       HOST = 'https://maps.googleapis.com/maps/api/distancematrix/json'
 
-      def initialize(user, travel_session)
-        @user = user
+      def initialize(travel_session)
         @travel_session = travel_session
       end
 

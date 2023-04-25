@@ -1,23 +1,21 @@
 module Purchases
-  class Validator < SessionValidator
+  class Validator < MachineValidator
     TIME_BETWEEN_PURCHASES = 12.hours
     EXPIRATION_TIME_LIMIT = 10.minutes
 
-    def initialize(machine_params, user)
-      @machine_uuid = machine_params[:uuid]
-      @expires = machine_params[:expires]
+    def initialize(machine, expires, user)
+      @machine = machine
+      @expires = expires
       @user = user
     end
 
     def call
-      return false unless super
-
       validate_purchase_offset && validate_expiration_date
     end
 
     private
 
-    attr_reader :user, :machine_uuid, :expires
+    attr_reader :machine, :user, :expires
 
     def validate_expiration_date
       begin

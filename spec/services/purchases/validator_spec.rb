@@ -6,7 +6,7 @@ RSpec.describe Purchases::Validator, type: :service do
   let!(:machine_params) { { uuid: machine.uuid, expires: expires } }
 
   describe '#call' do
-    let(:validator) { described_class.new(machine_params, user) }
+    let(:validator) { described_class.new(machine, expires, user) }
     subject { validator.call }
 
     context 'when everything is correct' do
@@ -36,18 +36,6 @@ RSpec.describe Purchases::Validator, type: :service do
         end
 
         it 'returns true' do
-          is_expected.to eq(false)
-        end
-      end
-
-      context 'when machine uuid do NOT match' do
-        let!(:other_machine) { create(:machine, :travel) }
-        let!(:expires) do
-          ActiveSupport::MessageEncryptor.new(machine.secret).encrypt_and_sign(DateTime.now + 10.minutes)
-        end
-        let!(:machine_params) { { uuid: other_machine.uuid, expires: expires } }
-
-        it 'returns false' do
           is_expected.to eq(false)
         end
       end
