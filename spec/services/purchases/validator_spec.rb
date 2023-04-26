@@ -32,7 +32,7 @@ RSpec.describe Purchases::Validator, type: :service do
 
       context 'when verification is too early' do
         let!(:expires) do
-          ActiveSupport::MessageEncryptor.new(machine.secret).encrypt_and_sign(DateTime.now + 11.minutes)
+          ActiveSupport::MessageEncryptor.new(machine.secret).encrypt_and_sign(DateTime.now -1.minutes)
         end
 
         it 'returns true' do
@@ -60,6 +60,19 @@ RSpec.describe Purchases::Validator, type: :service do
 
         it 'returns false' do
           is_expected.to eq(false)
+        end
+      end
+
+      context 'when time between purchases is correct' do
+        let!(:purchase) { create(:purchase, user: user) }
+
+        let!(:expires) do
+          ActiveSupport::MessageEncryptor.new(machine.secret).encrypt_and_sign(DateTime.now + 5.minutes)
+        end
+
+        it 'returns false' do
+          allow(DateTime).to receive(:now).and_return(DateTime.now + 20.seconds)
+          is_expected.to eq(true)
         end
       end
     end

@@ -1,6 +1,7 @@
 module Purchases
   class Validator < MachineValidator
-    TIME_BETWEEN_PURCHASES = 12.hours
+    #TODO: Return to 12 hours
+    TIME_BETWEEN_PURCHASES = 20.seconds
     EXPIRATION_TIME_LIMIT = 20.minutes
 
     def initialize(machine, expires, user)
@@ -31,7 +32,7 @@ module Purchases
     def validate_purchase_offset
       return true if @user.purchases.count.zero?
 
-      @user.purchases.last.created_at > DateTime.now + TIME_BETWEEN_PURCHASES
+      @user.purchases.last.created_at + TIME_BETWEEN_PURCHASES < verification_time
     end
   end
 end
