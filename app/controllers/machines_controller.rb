@@ -17,7 +17,7 @@ class MachinesController < ApplicationController
   private
 
   def machine_params
-    params.require(:machine).permit(:secret, :service_type, :uuid)
+    params.require(:machine).permit(:secret, :points, :service_type, :uuid)
   end
 
   def set_machine

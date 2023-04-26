@@ -1,7 +1,7 @@
 module Purchases
   class Validator < MachineValidator
     TIME_BETWEEN_PURCHASES = 12.hours
-    EXPIRATION_TIME_LIMIT = 10.minutes
+    EXPIRATION_TIME_LIMIT = 20.minutes
 
     def initialize(machine, expires, user)
       @machine = machine
