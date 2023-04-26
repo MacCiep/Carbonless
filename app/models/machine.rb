@@ -3,6 +3,7 @@
 # Table name: machines
 #
 #  id           :bigint           not null, primary key
+#  points       :integer          default(0)
 #  secret       :string           not null
 #  service_type :integer          not null
 #  uuid         :string           not null

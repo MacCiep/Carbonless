@@ -9,10 +9,12 @@ FactoryBot.define do
     end
 
     trait :cloth do
+      points { 100 }
       service_type { 1 }
     end
 
     trait :food do
+      points { 50 }
       service_type { 2 }
     end
   end

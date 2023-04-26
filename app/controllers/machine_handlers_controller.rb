@@ -1,5 +1,5 @@
 class MachineHandlersController < ApplicationController
-  before_action :set_travel_session, only: [:update]
+  before_action :set_travel_session, only: [:update, :destroy]
 
   def create
     result = MachineHandler.new(handler_params, current_user).call
@@ -19,6 +19,14 @@ class MachineHandlersController < ApplicationController
     end
   end
 
+  def destroy
+    if travel_session.present? && travel_session.destroy
+      head :ok
+    else
+      head :unprocessable_entity
+    end
+  end
+
   private
 
   attr_reader :travel_session
@@ -34,7 +42,6 @@ class MachineHandlersController < ApplicationController
   def handler_params
     params.require(:handler).permit(:uuid,
                                     :expires,
-                                    :points,
                                     :start_longitude,
                                     :start_latitude,
                                     :end_longitude,

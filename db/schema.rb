@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_04_21_071534) do
+ActiveRecord::Schema.define(version: 2023_04_26_081319) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -47,6 +47,7 @@ ActiveRecord::Schema.define(version: 2023_04_21_071534) do
     t.string "uuid", null: false
     t.string "secret", null: false
     t.integer "service_type", null: false
+    t.integer "points", default: 0
   end
 
   create_table "prizes", force: :cascade do |t|
