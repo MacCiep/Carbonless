@@ -5,6 +5,7 @@
 #  id                     :bigint           not null, primary key
 #  email                  :string           default(""), not null
 #  encrypted_password     :string           default(""), not null
+#  language               :integer          default(0), not null
 #  lastname               :string           not null
 #  name                   :string           not null
 #  points                 :bigint           default(0), not null
@@ -12,6 +13,7 @@
 #  reset_password_sent_at :datetime
 #  reset_password_token   :string
 #  tgtg_active            :boolean          default(FALSE), not null
+#  theme                  :integer          default(0), not null
 #  total_carbon_saved     :decimal(, )      default(0.0)
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null

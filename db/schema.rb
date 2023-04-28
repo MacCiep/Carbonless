@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_04_26_081319) do
+ActiveRecord::Schema.define(version: 2023_04_27_061452) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -103,6 +103,8 @@ ActiveRecord::Schema.define(version: 2023_04_26_081319) do
     t.decimal "total_carbon_saved", default: "0.0"
     t.boolean "tgtg_active", default: false, null: false
     t.integer "tgtg_id"
+    t.integer "theme", default: 0, null: false
+    t.integer "language", default: 0, null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end

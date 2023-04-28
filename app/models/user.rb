@@ -5,6 +5,7 @@
 #  id                     :bigint           not null, primary key
 #  email                  :string           default(""), not null
 #  encrypted_password     :string           default(""), not null
+#  language               :integer          default(0), not null
 #  lastname               :string           not null
 #  name                   :string           not null
 #  points                 :bigint           default(0), not null
@@ -12,6 +13,7 @@
 #  reset_password_sent_at :datetime
 #  reset_password_token   :string
 #  tgtg_active            :boolean          default(FALSE), not null
+#  theme                  :integer          default(0), not null
 #  total_carbon_saved     :decimal(, )      default(0.0)
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
@@ -29,11 +31,21 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable,
          :jwt_authenticatable, jwt_revocation_strategy: JwtDenyList
 
-  validates :name, :lastname, presence: true
+  validates :name, :lastname, :theme, :language, presence: true
   has_many :purchases
   has_many :history_points
   has_many :travel_sessions
   has_many :users_prizes
   has_many :prizes, through: :users_prizes
   has_many :achievements, through: :users_achievements
+
+  enum theme: {
+    light: 0,
+    dark: 1
+  }
+
+  enum language: {
+    en: 0,
+    pl: 1
+  }
 end

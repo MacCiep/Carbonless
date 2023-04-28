@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
-  devise_for :users
+  devise_for :users, controllers: { passwords: 'users/passwords', registrations: 'users/registrations' }
+  devise_scope :user do
+    get '/users/passwords/success', to: 'users/passwords#show'
+  end
   resources :tgtg_integrations, only: [:create, :update]
   get '/tgtg_integration', to: 'tgtg_integrations#show'
   resources :machines, only: [:index, :create]

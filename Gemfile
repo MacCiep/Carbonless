@@ -39,6 +39,7 @@ gem 'rubocop', require: false
 
 gem 'resonad'
 gem 'jbuilder'
+gem 'fcm'
 
 gem "sentry-ruby"
 gem "sentry-rails"

@@ -4,7 +4,7 @@ class ApplicationController < ActionController::API
   before_action :authenticate_user!
   before_action :configure_permitted_parameters, if: :devise_controller?
   before_action :prepare_pagination, only: %i[index]
-  respond_to :json
+  respond_to :json, :html
 
   def configure_permitted_parameters
     added_attrs = %i[name lastname email encrypted_password password_confirmation]
