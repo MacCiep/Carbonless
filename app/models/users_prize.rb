@@ -2,10 +2,12 @@
 #
 # Table name: users_prizes
 #
-#  id            :bigint           not null, primary key
-#  duration_left :integer          not null
-#  prize_id      :bigint
-#  user_id       :bigint
+#  id         :bigint           not null, primary key
+#  active     :boolean          default(TRUE)
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#  prize_id   :bigint
+#  user_id    :bigint
 #
 # Indexes
 #
@@ -15,4 +17,6 @@
 class UsersPrize < ApplicationRecord
   belongs_to :prize
   belongs_to :user
+
+  delegate :duration, to: :prize
 end

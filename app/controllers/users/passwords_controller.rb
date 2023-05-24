@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class Users::PasswordsController < Devise::PasswordsController
-  helper PasswordTemplateHelper
   # GET /resource/password/new
   # def new
   #   super
@@ -14,7 +13,6 @@ class Users::PasswordsController < Devise::PasswordsController
 
   # GET /resource/password/edit?reset_password_token=abcdef
   def edit
-    set_flash_message!(:notice, 'HEY!')
     super
   end
 

@@ -1,4 +1,17 @@
 Rails.application.routes.draw do
+  devise_for :admins, controllers: { sessions: 'admins/sessions' }
+  namespace :admin_administrate do
+      resources :users, only: [:create, :index, :update, :show, :new, :destroy, :edit]
+      # resources :achievements
+      resources :machines
+      resources :prizes, only: [:create, :index, :update, :show, :new, :destroy, :edit]
+      resources :purchases
+      resources :travel_sessions
+      # resources :user_achievements
+      resources :users_prizes
+
+      root to: "users#index"
+    end
   devise_for :users, controllers: { passwords: 'users/passwords', registrations: 'users/registrations' }
   devise_scope :user do
     get '/users/passwords/success', to: 'users/passwords#show'

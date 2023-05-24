@@ -40,6 +40,8 @@ gem 'rubocop', require: false
 gem 'resonad'
 gem 'jbuilder'
 gem 'fcm'
+gem 'pundit'
+gem "administrate"
 
 gem "sentry-ruby"
 gem "sentry-rails"

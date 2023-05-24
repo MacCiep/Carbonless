@@ -6,6 +6,7 @@
 #  duration :integer          not null
 #  price    :integer          not null
 #  title    :string           not null
+#  uuid     :uuid             not null
 #
 class Prize < ApplicationRecord
   validates :duration, :price, :title, presence: true
