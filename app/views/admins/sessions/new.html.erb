@@ -1,0 +1,55 @@
+<div class="login">
+  <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+    <div class="field">
+      <%= f.label :email %><br />
+      <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-input" %>
+    </div>
+
+    <div class="field">
+      <%= f.label :password %><br />
+      <%= f.password_field :password, autocomplete: "current-password", class: "form-input" %>
+    </div>
+
+    <div class="actions">
+      <%= f.submit "Log in", class: 'form-button' %>
+    </div>
+  <% end %>
+</div>
+
+<style>
+    body
+    {
+        font-family: 'Arial';
+    }
+    .login{
+        width: 382px;
+        overflow: hidden;
+        margin: auto;
+        /*margin: 20 0 0 450px;*/
+        padding: 70px 0;
+        text-align: center;
+        background: #23463f;
+        border-radius: 15px ;
+        align-content: center;
+    }
+    label{
+        color: white;
+        font-size: 17px;
+    }
+    .form-input{
+        width: 300px;
+        height: 30px;
+        border: none;
+        border-radius: 3px;
+        padding-left: 8px;
+        margin-bottom: 20px;
+    }
+    .form-button{
+        width: 300px;
+        height: 30px;
+        border: none;
+        border-radius: 17px;
+        padding-left: 7px;
+        color: black;
+    }
+</style>

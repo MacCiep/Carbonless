@@ -23,8 +23,8 @@ class MachineDashboard < Administrate::BaseDashboard
   COLLECTION_ATTRIBUTES = %i[
     id
     points
-    secret
     service_type
+    uuid
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
@@ -44,7 +44,6 @@ class MachineDashboard < Administrate::BaseDashboard
     points
     secret
     service_type
-    uuid
   ].freeze
 
   # COLLECTION_FILTERS

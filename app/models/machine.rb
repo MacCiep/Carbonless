@@ -6,10 +6,13 @@
 #  points       :integer          default(0)
 #  secret       :string           not null
 #  service_type :integer          not null
-#  uuid         :string           not null
+#  uuid         :uuid             not null
 #
 class Machine < ApplicationRecord
-  validates :uuid, :secret, :service_type, presence: true
+  validates :secret, :service_type, presence: true
+  has_many :travel_sessions
+  has_many :purchases
+
   enum service_type: {
     travel: 0,
     cloth: 1,

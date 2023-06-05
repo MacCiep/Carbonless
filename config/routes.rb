@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   namespace :admin_administrate do
       resources :users, only: [:create, :index, :update, :show, :new, :destroy, :edit]
       # resources :achievements
-      resources :machines
+      resources :machines, only: [:create, :index, :update, :show, :new, :destroy, :edit]
       resources :prizes, only: [:create, :index, :update, :show, :new, :destroy, :edit]
       resources :purchases
       resources :travel_sessions

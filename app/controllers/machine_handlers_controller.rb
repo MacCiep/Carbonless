@@ -23,7 +23,7 @@ class MachineHandlersController < ApplicationController
     if travel_session.present? && travel_session.destroy
       head :ok
     else
-      head :unprocessable_entity
+      head :bad_request
     end
   end
 
