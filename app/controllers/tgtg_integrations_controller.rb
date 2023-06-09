@@ -2,7 +2,7 @@ class TgtgIntegrationsController < ApplicationController
   def create
     response = TgtgMicroservice::Requests::Authorization.new(current_user).call
     if response.present?
-      current_user.update(tgtg_active: true, tgtg_id: response)
+      current_user.update(tgtg_id: response)
       render json: { message: 'User created, please check your email to accept connection' }, status: :created
     else
       render json: { message: 'Something went wrong, please try another time' }, status: 422

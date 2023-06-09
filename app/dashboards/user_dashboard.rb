@@ -13,8 +13,7 @@ class UserDashboard < Administrate::BaseDashboard
     encrypted_password: Field::String,
     history_points: Field::HasMany,
     language: Field::Select.with_options(searchable: false, collection: ->(field) { field.resource.class.send(field.attribute.to_s.pluralize).keys }),
-    lastname: Field::String,
-    name: Field::String,
+    username: Field::String,
     points: Field::Number,
     # prizes: Field::HasMany,
     purchases: Field::HasMany,
@@ -51,8 +50,7 @@ class UserDashboard < Administrate::BaseDashboard
     encrypted_password
     history_points
     language
-    lastname
-    name
+    username
     points
     purchases
     remember_created_at
@@ -77,8 +75,7 @@ class UserDashboard < Administrate::BaseDashboard
     encrypted_password
     history_points
     language
-    lastname
-    name
+    username
     points
     purchases
     remember_created_at

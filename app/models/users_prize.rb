@@ -2,7 +2,7 @@
 #
 # Table name: users_prizes
 #
-#  id         :bigint           not null, primary key
+#  id         :uuid             not null, primary key
 #  active     :boolean          default(TRUE)
 #  created_at :datetime         not null
 #  updated_at :datetime         not null

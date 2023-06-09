@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_06_04_135456) do
+ActiveRecord::Schema.define(version: 2023_06_09_081215) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -72,8 +72,6 @@ ActiveRecord::Schema.define(version: 2023_06_04_135456) do
   create_table "purchases", force: :cascade do |t|
     t.bigint "machine_id"
     t.bigint "user_id"
-    t.integer "points", default: 0, null: false
-    t.integer "purchase_type", default: 1, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["machine_id"], name: "index_purchases_on_machine_id"
@@ -110,20 +108,18 @@ ActiveRecord::Schema.define(version: 2023_06_04_135456) do
     t.datetime "remember_created_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "name", null: false
-    t.string "lastname", null: false
     t.bigint "points", default: 0, null: false
     t.decimal "total_carbon_saved", default: "0.0"
-    t.boolean "tgtg_active", default: false, null: false
     t.integer "tgtg_id"
     t.integer "theme", default: 0, null: false
     t.integer "language", default: 0, null: false
     t.integer "user_type", default: 0
+    t.string "username"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
-  create_table "users_prizes", force: :cascade do |t|
+  create_table "users_prizes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.bigint "user_id"
     t.bigint "prize_id"
     t.boolean "active", default: true

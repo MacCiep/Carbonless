@@ -21,7 +21,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   # PUT /resource
   def update
-    debugger
     super
   end
 
@@ -48,7 +47,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   def configure_account_update_params
      devise_parameter_sanitizer.permit(:account_update) do |user|
-       user.permit(:name, :lastname, :theme, :language, :password, :password_confirmation, :current_password)
+       user.permit(:theme, :language, :password, :password_confirmation, :current_password)
      end
    end
 

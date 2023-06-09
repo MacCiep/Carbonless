@@ -2,13 +2,11 @@
 #
 # Table name: purchases
 #
-#  id            :bigint           not null, primary key
-#  points        :integer          default(0), not null
-#  purchase_type :integer          default("cloth"), not null
-#  created_at    :datetime         not null
-#  updated_at    :datetime         not null
-#  machine_id    :bigint
-#  user_id       :bigint
+#  id         :bigint           not null, primary key
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#  machine_id :bigint
+#  user_id    :bigint
 #
 # Indexes
 #

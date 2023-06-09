@@ -12,7 +12,7 @@ Rails.application.routes.draw do
 
       root to: "users#index"
     end
-  devise_for :users, controllers: { passwords: 'users/passwords', registrations: 'users/registrations' }
+  devise_for :users, controllers: { passwords: 'users/passwords', registrations: 'users/registrations', sessions: 'users/sessions' }
   devise_scope :user do
     get '/users/passwords/success', to: 'users/passwords#show'
   end
@@ -23,7 +23,7 @@ Rails.application.routes.draw do
   patch '/machine_handlers', to: 'machine_handlers#update'
   delete '/machine_handlers', to: 'machine_handlers#destroy'
   get '/carbon_savings', to: 'carbon_savings#show'
-  resources :prizes
+  resources :prizes, only: [:index]
   resources :users_prizes
   post '/purchases', to: 'purchases#create'
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html

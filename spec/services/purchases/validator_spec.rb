@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Purchases::Validator, type: :service do
   let!(:user) { create(:user) }
-  let!(:machine) { create(:machine, :food) }
+  let!(:machine) { create(:machine, :purchase) }
   let!(:machine_params) { { uuid: machine.uuid, expires: expires } }
 
   describe '#call' do

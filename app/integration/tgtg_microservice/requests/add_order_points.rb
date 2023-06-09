@@ -10,9 +10,9 @@ module TgtgMicroservice
       end
 
       def call
-        return unless user.tgtg_active
+        return unless user.tgtg_id
 
-        response = Faraday.get("#{ENV['TGTG_MICROSERVICE_URL']}/#{ENDPOINT}/#{user.id}")
+        response = Faraday.get("#{ENV['TGTG_MICROSERVICE_URL']}/#{ENDPOINT}/#{user.tgtg_id}")
         return nil unless response.status == 200
 
         response_body = JSON.parse response.body

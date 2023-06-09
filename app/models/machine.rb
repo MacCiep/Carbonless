@@ -15,7 +15,6 @@ class Machine < ApplicationRecord
 
   enum service_type: {
     travel: 0,
-    cloth: 1,
-    food: 2
+    purchase: 1
   }
 end

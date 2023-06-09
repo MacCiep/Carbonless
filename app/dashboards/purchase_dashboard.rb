@@ -11,7 +11,6 @@ class PurchaseDashboard < Administrate::BaseDashboard
     id: Field::Number,
     machine: Field::BelongsTo,
     points: Field::Number,
-    purchase_type: Field::Select.with_options(searchable: false, collection: ->(field) { field.resource.class.send(field.attribute.to_s.pluralize).keys }),
     user: Field::BelongsTo,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
@@ -26,7 +25,6 @@ class PurchaseDashboard < Administrate::BaseDashboard
     id
     machine
     points
-    purchase_type
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
@@ -35,7 +33,6 @@ class PurchaseDashboard < Administrate::BaseDashboard
     id
     machine
     points
-    purchase_type
     user
     created_at
     updated_at
@@ -47,7 +44,6 @@ class PurchaseDashboard < Administrate::BaseDashboard
   FORM_ATTRIBUTES = %i[
     machine
     points
-    purchase_type
     user
   ].freeze
 

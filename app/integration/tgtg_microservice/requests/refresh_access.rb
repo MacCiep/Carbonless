@@ -9,9 +9,9 @@ module TgtgMicroservice
       end
 
       def call
-        return if user.tgtg_active
+        return if user.tgtg_id
 
-        response = Faraday.put("#{ENV['TGTG_MICROSERVICE_URL']}/#{ENDPOINT}/#{user.id}")
+        response = Faraday.put("#{ENV['TGTG_MICROSERVICE_URL']}/#{ENDPOINT}/#{user.tgtg_id}")
 
         response.status == 200
       end

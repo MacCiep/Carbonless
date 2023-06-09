@@ -2,13 +2,11 @@
 #
 # Table name: purchases
 #
-#  id            :bigint           not null, primary key
-#  points        :integer          default(0), not null
-#  purchase_type :integer          default("cloth"), not null
-#  created_at    :datetime         not null
-#  updated_at    :datetime         not null
-#  machine_id    :bigint
-#  user_id       :bigint
+#  id         :bigint           not null, primary key
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#  machine_id :bigint
+#  user_id    :bigint
 #
 # Indexes
 #
@@ -21,12 +19,9 @@
 #  fk_rails_...  (user_id => users.id)
 #
 class Purchase < ApplicationRecord
-  validates :machine, :points, :purchase_type, :user, presence: true
+  validates :machine, :points, :user, presence: true
   belongs_to :user
   belongs_to :machine
 
-  enum purchase_type: {
-    cloth: 1,
-    food: 2
-  }
+  delegate :points, to: :machine
 end
