@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_06_09_081215) do
+ActiveRecord::Schema.define(version: 2023_06_11_201805) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -55,11 +55,24 @@ ActiveRecord::Schema.define(version: 2023_06_09_081215) do
     t.index ["jti"], name: "index_jwt_denylist_on_jti"
   end
 
+  create_table "locations", force: :cascade do |t|
+    t.bigint "machine_id", null: false
+    t.decimal "latitude", null: false
+    t.decimal "longitude", null: false
+    t.index ["machine_id"], name: "index_locations_on_machine_id"
+  end
+
   create_table "machines", force: :cascade do |t|
     t.string "secret", null: false
     t.integer "service_type", null: false
     t.integer "points", default: 0
     t.uuid "uuid", default: -> { "gen_random_uuid()" }, null: false
+    t.bigint "partner_id", null: false
+    t.index ["partner_id"], name: "index_machines_on_partner_id"
+  end
+
+  create_table "partners", force: :cascade do |t|
+    t.string "name"
   end
 
   create_table "prizes", force: :cascade do |t|
@@ -67,6 +80,8 @@ ActiveRecord::Schema.define(version: 2023_06_09_081215) do
     t.integer "price", null: false
     t.integer "duration", null: false
     t.uuid "uuid", default: -> { "gen_random_uuid()" }, null: false
+    t.bigint "partner_id"
+    t.index ["partner_id"], name: "index_prizes_on_partner_id"
   end
 
   create_table "purchases", force: :cascade do |t|
@@ -129,6 +144,7 @@ ActiveRecord::Schema.define(version: 2023_06_09_081215) do
     t.index ["user_id"], name: "index_users_prizes_on_user_id"
   end
 
+  add_foreign_key "prizes", "partners"
   add_foreign_key "purchases", "machines"
   add_foreign_key "purchases", "users"
 end

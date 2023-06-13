@@ -9,6 +9,7 @@ require File.expand_path('../config/environment', __dir__)
 abort("The Rails environment is running in production mode!") if Rails.env.production?
 require 'rspec/rails'
 # Add additional requires below this line. Rails is not loaded until this point!
+require 'devise/jwt/test_helpers'
 
 Dir[Rails.root.join("spec", "support", "**", "*.rb")].each { |f| require f }
 
@@ -38,6 +39,14 @@ end
 RSpec.configure do |config|
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
+  config.include(ApiHelper)
+
+  Shoulda::Matchers.configure do |config|
+    config.integrate do |with|
+      with.test_framework :rspec
+      with.library :rails
+    end
+  end
 
   # Devise tests authorization
   config.include Devise::TestHelpers, type: :controller

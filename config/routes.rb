@@ -7,6 +7,8 @@ Rails.application.routes.draw do
       resources :prizes, only: [:create, :index, :update, :show, :new, :destroy, :edit]
       resources :purchases
       resources :travel_sessions
+      resources :partners, only: [:create, :index, :update, :show, :new, :destroy, :edit]
+      resources :locations, only: [:create, :index, :update, :show, :new, :destroy, :edit]
       # resources :user_achievements
       resources :users_prizes
 
@@ -25,6 +27,11 @@ Rails.application.routes.draw do
   get '/carbon_savings', to: 'carbon_savings#show'
   resources :prizes, only: [:index]
   resources :users_prizes
+  resources :locations, only: [:index]
+  resources :partners, only: [:index] do
+    get '/locations', to: 'partners/locations#index'
+    get '/prizes', to: 'partners/prizes#index'
+  end
   post '/purchases', to: 'purchases#create'
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end
