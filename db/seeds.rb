@@ -22,15 +22,15 @@ end
   )
 end
 
-(1..5).each do |idx|
-  Prize.create!(price: 100, title: "Prize #{idx}", duration: idx)
-end
-
 partner_travel = Partner.create!(name: 'LocalTravel')
 partner_shop = Partner.create!(name: 'LocalECOShop')
 
 Machine.create!(secret: '362bfb95773afcfd1e6c82fcce9e4a12', service_type: :travel, partner: partner_travel )
-Machine.create!(secret: '362bfb95773afcfd1e6c82fcce9e4a12', service_type: :purchase, points: 100, partner: partner_shop)
+shop_machine = Machine.create!(secret: '362bfb95773afcfd1e6c82fcce9e4a12', service_type: :purchase, points: 100, partner: partner_shop)
 
-Location.create!(machine: Machine.second, latitude: '87.42', longitude: '32.231')
+(1..5).each do |idx|
+  Prize.create!(price: 100, title: "Prize #{idx}", duration: idx, partner: partner_shop)
+end
+
+Location.create!(machine: shop_machine, latitude: '87.42', longitude: '32.231')
 end
