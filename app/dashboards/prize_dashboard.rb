@@ -12,8 +12,7 @@ class PrizeDashboard < Administrate::BaseDashboard
     duration: Field::Number,
     price: Field::Number,
     title: Field::String,
-    user_prizes: Field::HasMany,
-    uuid: Field::String,
+    partner: Field::BelongsTo,
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -26,6 +25,7 @@ class PrizeDashboard < Administrate::BaseDashboard
     duration
     price
     title
+    partner
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
@@ -35,8 +35,6 @@ class PrizeDashboard < Administrate::BaseDashboard
     duration
     price
     title
-    user_prizes
-    uuid
   ].freeze
 
   # FORM_ATTRIBUTES
@@ -46,7 +44,7 @@ class PrizeDashboard < Administrate::BaseDashboard
     duration
     price
     title
-    uuid
+    partner
   ].freeze
 
   # COLLECTION_FILTERS

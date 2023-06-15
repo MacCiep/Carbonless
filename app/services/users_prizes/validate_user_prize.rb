@@ -15,7 +15,7 @@ module UsersPrizes
     end
 
     def duration_left?
-      (@user_prize.created_at + @user_prize.duration).in_time_zone("UTC") > DateTime.now.in_time_zone("UTC")
+      (@user_prize.created_at + @user_prize.duration.days).in_time_zone("UTC") > DateTime.now.in_time_zone("UTC")
     end
   end
 end

@@ -12,6 +12,7 @@ class MachineDashboard < Administrate::BaseDashboard
     points: Field::Number,
     secret: Field::String,
     service_type: Field::Select.with_options(searchable: false, collection: ->(field) { field.resource.class.send(field.attribute.to_s.pluralize).keys }),
+    partner: Field::BelongsTo,
     uuid: Field::String,
   }.freeze
 
@@ -25,6 +26,7 @@ class MachineDashboard < Administrate::BaseDashboard
     points
     service_type
     uuid
+    partner
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
@@ -35,6 +37,7 @@ class MachineDashboard < Administrate::BaseDashboard
     secret
     service_type
     uuid
+    partner
   ].freeze
 
   # FORM_ATTRIBUTES
@@ -44,6 +47,7 @@ class MachineDashboard < Administrate::BaseDashboard
     points
     secret
     service_type
+    partner
   ].freeze
 
   # COLLECTION_FILTERS

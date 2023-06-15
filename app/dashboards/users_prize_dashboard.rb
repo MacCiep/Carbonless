@@ -8,7 +8,7 @@ class UsersPrizeDashboard < Administrate::BaseDashboard
   # which determines how the attribute is displayed
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
-    id: Field::Number,
+    id: Field::String,
     active: Field::Boolean,
     prize: Field::BelongsTo,
     user: Field::BelongsTo,
