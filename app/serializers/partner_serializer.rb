@@ -2,9 +2,10 @@
 #
 # Table name: partners
 #
-#  id     :bigint           not null, primary key
-#  name   :string
-#  points :integer          default(0), not null
+#  id          :bigint           not null, primary key
+#  description :text
+#  name        :string
+#  points      :integer          default(0), not null
 #
 class PartnerSerializer
   attr_reader :partner, :latitude, :longitude

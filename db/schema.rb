@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_06_23_124213) do
+ActiveRecord::Schema.define(version: 2023_06_23_171158) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -94,6 +94,7 @@ ActiveRecord::Schema.define(version: 2023_06_23_124213) do
   create_table "partners", force: :cascade do |t|
     t.string "name"
     t.integer "points", default: 0, null: false
+    t.text "description"
   end
 
   create_table "prizes", force: :cascade do |t|

@@ -10,6 +10,7 @@ class PartnerDashboard < Administrate::BaseDashboard
   ATTRIBUTE_TYPES = {
     id: Field::Number,
     machines: Field::HasMany,
+    description: Field::Text,
     name: Field::String,
     points: Field::Number,
     prize: Field::HasMany,
@@ -34,6 +35,7 @@ class PartnerDashboard < Administrate::BaseDashboard
   SHOW_PAGE_ATTRIBUTES = %i[
     id
     points
+    description
     machines
     name
     prize
@@ -45,6 +47,7 @@ class PartnerDashboard < Administrate::BaseDashboard
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = %i[
     name
+    description
     points
     logo
   ].freeze

@@ -1,6 +1,10 @@
 class PartnerBlueprint < Blueprinter::Base
 
-  fields :name
+  fields :name, :description
+
+  field :logo do |partner|
+    partner.logo.service_url if partner.logo.attached?
+  end
 
   view :with_locations do
     association :locations, blueprint: LocationBlueprint do |partner, options|
