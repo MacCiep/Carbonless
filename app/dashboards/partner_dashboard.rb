@@ -13,6 +13,7 @@ class PartnerDashboard < Administrate::BaseDashboard
     name: Field::String,
     points: Field::Number,
     prize: Field::HasMany,
+    logo: Field::ActiveStorage,
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -36,6 +37,7 @@ class PartnerDashboard < Administrate::BaseDashboard
     machines
     name
     prize
+    logo
   ].freeze
 
   # FORM_ATTRIBUTES
@@ -44,6 +46,7 @@ class PartnerDashboard < Administrate::BaseDashboard
   FORM_ATTRIBUTES = %i[
     name
     points
+    logo
   ].freeze
 
   # COLLECTION_FILTERS
