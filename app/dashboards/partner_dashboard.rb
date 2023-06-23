@@ -11,6 +11,7 @@ class PartnerDashboard < Administrate::BaseDashboard
     id: Field::Number,
     machines: Field::HasMany,
     name: Field::String,
+    points: Field::Number,
     prize: Field::HasMany,
   }.freeze
 
@@ -23,6 +24,7 @@ class PartnerDashboard < Administrate::BaseDashboard
     id
     machines
     name
+    points
     prize
   ].freeze
 
@@ -30,6 +32,7 @@ class PartnerDashboard < Administrate::BaseDashboard
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = %i[
     id
+    points
     machines
     name
     prize
@@ -40,6 +43,7 @@ class PartnerDashboard < Administrate::BaseDashboard
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = %i[
     name
+    points
   ].freeze
 
   # COLLECTION_FILTERS

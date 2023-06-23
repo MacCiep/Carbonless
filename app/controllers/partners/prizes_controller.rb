@@ -1,7 +1,8 @@
 module Partners
   class PrizesController < ApplicationController
     def index
-      render json: paginated_response(scoped_prizes), status: :ok
+      @pagy, @records = pagy(scoped_prizes)
+      render json: paginated_response, status: :ok
     end
 
     private

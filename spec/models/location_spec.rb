@@ -51,11 +51,11 @@ RSpec.describe Location, type: :model do
 
       context 'when latitude and longitude are within range' do
         it 'returns location' do
-          expect(Location.with_nearby_machines(70.1, 70.1)).to(eq([location]))
+          expect(Location.with_nearby_machines(70.0901, 70.0901)).to(eq([location]))
         end
 
         it 'returns location' do
-          expect(Location.with_nearby_machines(69.9, 69.9)).to(eq([location]))
+          expect(Location.with_nearby_machines(69.91, 69.91)).to(eq([location]))
         end
       end
     end

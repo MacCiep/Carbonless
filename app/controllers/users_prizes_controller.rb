@@ -3,7 +3,8 @@ class UsersPrizesController < ApplicationController
   before_action :set_prize, only: %i[create]
 
   def index
-    render json: paginated_response(current_user.users_prizes), status: :ok
+    @pagy, @records = pagy(current_user.users_prizes)
+    render json: paginated_response, status: :ok
   end
 
   def create

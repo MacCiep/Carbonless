@@ -2,7 +2,8 @@ class PrizesController < ApplicationController
   before_action :set_prize, only: %i[update show destroy]
 
   def index
-    render json: paginated_response(Prize.all.order("price ASC")), status: :ok
+    @pagy, @records = pagy(Prize.all.order("price ASC"))
+    render json: paginated_response, status: :ok
   end
 
   def create

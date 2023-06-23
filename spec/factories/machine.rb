@@ -10,7 +10,6 @@ FactoryBot.define do
     end
 
     trait :purchase do
-      points { 100 }
       service_type { 1 }
     end
   end

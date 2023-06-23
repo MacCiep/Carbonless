@@ -2,7 +2,8 @@ class MachinesController < ApplicationController
   before_action :set_machine, only: %i[show update destroy]
 
   def index
-    render json: paginated_response(Machine.all), status: :ok
+    @pagy, @records = pagy(Machine.all)
+    render json: paginated_response, status: :ok
   end
 
   def create
@@ -17,7 +18,7 @@ class MachinesController < ApplicationController
   private
 
   def machine_params
-    params.require(:machine).permit(:secret, :points, :service_type, :uuid)
+    params.require(:machine).permit(:secret, :service_type, :uuid)
   end
 
   def set_machine

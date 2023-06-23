@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_06_11_201805) do
+ActiveRecord::Schema.define(version: 2023_06_21_211522) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -65,7 +65,6 @@ ActiveRecord::Schema.define(version: 2023_06_11_201805) do
   create_table "machines", force: :cascade do |t|
     t.string "secret", null: false
     t.integer "service_type", null: false
-    t.integer "points", default: 0
     t.uuid "uuid", default: -> { "gen_random_uuid()" }, null: false
     t.bigint "partner_id", null: false
     t.index ["partner_id"], name: "index_machines_on_partner_id"
@@ -73,6 +72,7 @@ ActiveRecord::Schema.define(version: 2023_06_11_201805) do
 
   create_table "partners", force: :cascade do |t|
     t.string "name"
+    t.integer "points", default: 0, null: false
   end
 
   create_table "prizes", force: :cascade do |t|

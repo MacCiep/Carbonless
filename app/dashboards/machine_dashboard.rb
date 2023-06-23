@@ -9,7 +9,6 @@ class MachineDashboard < Administrate::BaseDashboard
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
     id: Field::Number,
-    points: Field::Number,
     secret: Field::String,
     service_type: Field::Select.with_options(searchable: false, collection: ->(field) { field.resource.class.send(field.attribute.to_s.pluralize).keys }),
     partner: Field::BelongsTo,
@@ -23,7 +22,6 @@ class MachineDashboard < Administrate::BaseDashboard
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = %i[
     id
-    points
     service_type
     uuid
     partner
@@ -33,7 +31,6 @@ class MachineDashboard < Administrate::BaseDashboard
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = %i[
     id
-    points
     secret
     service_type
     uuid
@@ -44,7 +41,6 @@ class MachineDashboard < Administrate::BaseDashboard
   # an array of attributes that will be displayed
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = %i[
-    points
     secret
     service_type
     partner

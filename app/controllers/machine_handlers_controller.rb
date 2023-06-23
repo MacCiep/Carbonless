@@ -1,4 +1,5 @@
 class MachineHandlersController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_travel_session, only: [:update, :destroy]
 
   def create
