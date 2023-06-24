@@ -1,16 +1,16 @@
 class PartnersController < ApplicationController
   def index
     if params[:latitude] && params[:longitude]
-      response = scoped_partners
-    else
-      @pagy, @records = pagy(scoped_partners)
-      @records = PartnerBlueprint.render_as_hash(
-        @records,
+      response = PartnerBlueprint.render_as_hash(
+        scoped_partners,
         view: :with_locations,
         latitude: latitude,
         longitude: longitude,
         range: range
       )
+    else
+      @pagy, @records = pagy(scoped_partners)
+      @records = PartnerBlueprint.render_as_hash(@records)
       response = paginated_response
     end
 
@@ -22,7 +22,7 @@ class PartnersController < ApplicationController
   def scoped_partners
     if latitude && longitude
       machines_ids = Location.with_nearby_machines(latitude, longitude, range).pluck(:machine_id).uniq
-      Partner.joins(:machines).where(machines: { id: machines_ids })
+      Partner.joins(:machines).where(machines: { id: machines_ids }).distinct
     else
       Partner.all
     end

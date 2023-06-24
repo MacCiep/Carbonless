@@ -2,9 +2,10 @@ module Partners
   class LocationsController < ApplicationController
     def index
       if params[:latitude] && params[:longitude]
-        response = scoped_locations
+        response = LocationBlueprint.render_as_hash(scoped_locations)
       else
         @pagy, @records = pagy(scoped_locations)
+        @records = LocationBlueprint.render_as_hash(@records)
         response = paginated_response
       end
 
