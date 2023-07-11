@@ -21,7 +21,7 @@ namespace :populate_locations do
   end
 
   def populate_locations
-    100.times do
+    40.times do
       machine = Machine.create!(
         service_type: :travel,
         secret: '362bfb95773afcfd1e6c82fcce9e4a12',
