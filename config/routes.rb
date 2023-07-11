@@ -16,6 +16,7 @@ Rails.application.routes.draw do
     end
   devise_for :users, controllers: { passwords: 'users/passwords', registrations: 'users/registrations', sessions: 'users/sessions' }
   devise_scope :user do
+    get '/users/me', to: 'users/sessions#show'
     get '/users/passwords/success', to: 'users/passwords#show'
   end
   resources :tgtg_integrations, only: [:create, :update]

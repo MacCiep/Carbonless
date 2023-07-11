@@ -12,9 +12,9 @@ namespace :populate_locations do
 
   def populate_partners
     puts 'Populating partners...'
-    5.times do
+    5.times do |idx|
       Partner.create!(
-        name: Faker::Company.name,
+        name: "Company #{idx}",
         points: rand(1..4) * 100
       )
     end
