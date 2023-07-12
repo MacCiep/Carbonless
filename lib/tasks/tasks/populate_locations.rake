@@ -31,7 +31,9 @@ namespace :populate_locations do
       Location.create!(
         machine: machine,
         latitude: rand(51.66912222222..51.846845),
-        longitude: rand(19.3305765..19.57322788)
+        longitude: rand(19.3305765..19.57322788),
+        country: "Poland",
+        city: "Lodz"
       )
     end
   end

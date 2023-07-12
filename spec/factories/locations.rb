@@ -3,6 +3,8 @@
 # Table name: locations
 #
 #  id         :bigint           not null, primary key
+#  city       :string
+#  country    :string
 #  latitude   :decimal(, )      not null
 #  longitude  :decimal(, )      not null
 #  machine_id :bigint           not null
@@ -16,5 +18,7 @@ FactoryBot.define do
     machine
     latitude { Faker::Address.latitude }
     longitude { Faker::Address.longitude }
+    city { Faker::Address.city }
+    country { Faker::Address.country }
   end
 end

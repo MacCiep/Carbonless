@@ -11,7 +11,7 @@ module Purchases
 
       purchase = user.purchases.build(machine: machine)
       if purchase.save
-        UserUpdater.new(user: user, points: machine.partner.points).call
+        UserUpdater.new(user: user, machine: machine).call
         Resonad.Success(PurchaseSerializer.new(purchase, user).call)
       else
         Resonad.Failure(purchase.errors.full_messages)

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_06_23_171158) do
+ActiveRecord::Schema.define(version: 2023_07_11_211126) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -80,6 +80,8 @@ ActiveRecord::Schema.define(version: 2023_06_23_171158) do
     t.bigint "machine_id", null: false
     t.decimal "latitude", null: false
     t.decimal "longitude", null: false
+    t.string "country"
+    t.string "city"
     t.index ["machine_id"], name: "index_locations_on_machine_id"
   end
 
@@ -152,6 +154,9 @@ ActiveRecord::Schema.define(version: 2023_06_23_171158) do
     t.integer "language", default: 0, null: false
     t.integer "user_type", default: 0
     t.string "username"
+    t.string "country"
+    t.string "city"
+    t.integer "score", default: 0
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end

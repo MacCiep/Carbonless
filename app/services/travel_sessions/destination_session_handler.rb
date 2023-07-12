@@ -21,6 +21,7 @@ module TravelSessions
         if travel_session.update(active: false, car_distance: car_distance)
           session_results = TravelSessions::TravelSessionCalculator.new(car_distance).call
           UserUpdater.new(user: user,
+                          machine: machine,
                           points: session_results[:points],
                           carbon_saved: session_results[:carbon_saved]).call
 

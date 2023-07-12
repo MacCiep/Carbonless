@@ -3,6 +3,8 @@
 # Table name: users
 #
 #  id                     :bigint           not null, primary key
+#  city                   :string
+#  country                :string
 #  email                  :string           default(""), not null
 #  encrypted_password     :string           default(""), not null
 #  language               :integer          default("en"), not null
@@ -10,6 +12,7 @@
 #  remember_created_at    :datetime
 #  reset_password_sent_at :datetime
 #  reset_password_token   :string
+#  score                  :integer          default(0)
 #  theme                  :integer          default("light"), not null
 #  total_carbon_saved     :decimal(, )      default(0.0)
 #  user_type              :integer          default("normal")

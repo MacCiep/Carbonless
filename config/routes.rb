@@ -19,6 +19,7 @@ Rails.application.routes.draw do
     get '/users/me', to: 'users/sessions#show'
     get '/users/passwords/success', to: 'users/passwords#show'
   end
+  resources :high_scores, only: [:index]
   resources :tgtg_integrations, only: [:create, :update]
   get '/tgtg_integration', to: 'tgtg_integrations#show'
   resources :machines, only: [:index, :create]

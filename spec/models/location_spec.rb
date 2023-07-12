@@ -3,6 +3,8 @@
 # Table name: locations
 #
 #  id         :bigint           not null, primary key
+#  city       :string
+#  country    :string
 #  latitude   :decimal(, )      not null
 #  longitude  :decimal(, )      not null
 #  machine_id :bigint           not null
