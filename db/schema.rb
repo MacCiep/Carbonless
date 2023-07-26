@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_07_11_211126) do
+ActiveRecord::Schema.define(version: 2023_07_25_211715) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -101,7 +101,7 @@ ActiveRecord::Schema.define(version: 2023_07_11_211126) do
 
   create_table "prizes", force: :cascade do |t|
     t.string "title", null: false
-    t.integer "price", null: false
+    t.integer "price", default: 0, null: false
     t.integer "duration", null: false
     t.uuid "uuid", default: -> { "gen_random_uuid()" }, null: false
     t.bigint "partner_id"
@@ -128,6 +128,7 @@ ActiveRecord::Schema.define(version: 2023_07_11_211126) do
     t.decimal "car_distance"
     t.boolean "active"
     t.bigint "machine_id"
+    t.boolean "success", default: false
     t.index ["user_id"], name: "index_travel_sessions_on_user_id"
   end
 
@@ -175,4 +176,44 @@ ActiveRecord::Schema.define(version: 2023_07_11_211126) do
   add_foreign_key "prizes", "partners"
   add_foreign_key "purchases", "machines"
   add_foreign_key "purchases", "users"
+
+  create_view "points_histories", sql_definition: <<-SQL
+      SELECT points_history.partner_name,
+      points_history.points,
+      points_history.user_id,
+      points_history.history_type,
+      points_history.prize_title,
+      points_history.created_at
+     FROM ( SELECT purchases.user_id,
+              purchases.created_at,
+              partners.name AS partner_name,
+              partners.points,
+              NULL::text AS prize_title,
+              'purchase'::text AS history_type
+             FROM ((purchases
+               JOIN machines ON ((purchases.machine_id = machines.id)))
+               JOIN partners ON ((machines.partner_id = partners.id)))
+          UNION
+           SELECT travel_sessions.user_id,
+              travel_sessions.updated_at AS created_at,
+              partners.name AS partner_name,
+              partners.points,
+              NULL::text AS prize_title,
+              'travel'::text AS history_type
+             FROM ((travel_sessions
+               JOIN machines ON ((travel_sessions.machine_id = machines.id)))
+               JOIN partners ON ((machines.partner_id = partners.id)))
+            WHERE (travel_sessions.success = true)
+          UNION
+           SELECT users_prizes.user_id,
+              users_prizes.created_at,
+              partners.name AS partner_name,
+              prizes.price AS points,
+              prizes.title AS prize_title,
+              'prize'::text AS history_type
+             FROM ((users_prizes
+               JOIN prizes ON ((users_prizes.prize_id = prizes.id)))
+               JOIN partners ON ((prizes.partner_id = partners.id)))) points_history
+    ORDER BY points_history.created_at DESC;
+  SQL
 end

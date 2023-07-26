@@ -35,5 +35,6 @@ Rails.application.routes.draw do
     get '/prizes', to: 'partners/prizes#index'
   end
   post '/purchases', to: 'purchases#create'
+  resources :points_histories, only: [:index]
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end

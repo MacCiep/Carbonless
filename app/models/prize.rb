@@ -4,7 +4,7 @@
 #
 #  id         :bigint           not null, primary key
 #  duration   :integer          not null
-#  price      :integer          not null
+#  price      :integer          default(0), not null
 #  title      :string           not null
 #  uuid       :uuid             not null
 #  partner_id :bigint

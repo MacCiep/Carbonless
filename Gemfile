@@ -43,6 +43,7 @@ gem 'resonad'
 gem 'jbuilder'
 gem 'fcm'
 gem 'pundit'
+gem 'scenic'
 
 gem "administrate"
 gem 'administrate-field-active_storage'

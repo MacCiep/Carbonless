@@ -32,7 +32,7 @@ RSpec.describe Purchases::Validator, type: :service do
 
       context 'when verification is too early' do
         let!(:expires) do
-          ActiveSupport::MessageEncryptor.new(machine.secret).encrypt_and_sign(DateTime.now -1.minutes)
+          ActiveSupport::MessageEncryptor.new(machine.secret).encrypt_and_sign(DateTime.now - 1.minutes)
         end
 
         it 'returns true' do

@@ -19,8 +19,8 @@ FactoryBot.define do
 
     trait :completed do
       inactive
+      success { true }
       car_distance { Faker::Number.number(digits: 5)}
-      billet_id { Faker::Number.number(digits: 8) }
     end
   end
 end
