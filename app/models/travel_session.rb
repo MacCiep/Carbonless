@@ -7,6 +7,7 @@
 #  car_distance    :decimal(, )
 #  end_latitude    :string
 #  end_longitude   :string
+#  points          :integer          default(0), not null
 #  start_latitude  :string
 #  start_longitude :string
 #  success         :boolean          default(FALSE)

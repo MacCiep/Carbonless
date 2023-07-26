@@ -17,9 +17,10 @@ module TravelSessions
       # TODO: Message should be equal to above failure message
       return Resonad.Failure('Wrong coordinates') unless car_distance.present?
 
+      session_results = TravelSessions::TravelSessionCalculator.new(car_distance).call
+
       ActiveRecord::Base.transaction do
-        if travel_session.update(car_distance: car_distance, success: true, active: false)
-          session_results = TravelSessions::TravelSessionCalculator.new(car_distance).call
+        if travel_session.update(car_distance: car_distance, success: true, active: false, points: session_results[:points])
           UserUpdater.new(user: user,
                           machine: machine,
                           points: session_results[:points],

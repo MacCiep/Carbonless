@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_07_25_211715) do
+ActiveRecord::Schema.define(version: 2023_07_26_065035) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -129,6 +129,7 @@ ActiveRecord::Schema.define(version: 2023_07_25_211715) do
     t.boolean "active"
     t.bigint "machine_id"
     t.boolean "success", default: false
+    t.integer "points", default: 0, null: false
     t.index ["user_id"], name: "index_travel_sessions_on_user_id"
   end
 
