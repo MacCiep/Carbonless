@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_07_26_065035) do
+ActiveRecord::Schema.define(version: 2023_07_26_072420) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -198,7 +198,7 @@ ActiveRecord::Schema.define(version: 2023_07_26_065035) do
            SELECT travel_sessions.user_id,
               travel_sessions.updated_at AS created_at,
               partners.name AS partner_name,
-              partners.points,
+              travel_sessions.points,
               NULL::text AS prize_title,
               'travel'::text AS history_type
              FROM ((travel_sessions
