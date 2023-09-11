@@ -36,5 +36,6 @@ Rails.application.routes.draw do
   end
   post '/purchases', to: 'purchases#create'
   resources :points_histories, only: [:index]
+  get '/qr_codes_generators', to: 'qr_code_generators#show'
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end
