@@ -6,6 +6,6 @@ class QrCodeGeneratorsController < ApplicationController
 
     expiration_date = ExpirationDateEncryptor.new(Time.now + 20.minutes, current_user.machine.secret).call
 
-    render json: { expiration_date: expiration_date, uuid: current_user.machine.uuid }, status: :ok
+    render json: { expiration_date: expiration_date, uuid: current_user.machine.uuid, type: current_user.machine.service_type }, status: :ok
   end
 end
