@@ -14,6 +14,10 @@
 #  index_machines_on_partner_id  (partner_id)
 #  index_machines_on_user_id     (user_id)
 #
+# Foreign Keys
+#
+#  fk_rails_...  (partner_id => partners.id)
+#
 class Machine < ApplicationRecord
   validates :secret, :service_type, presence: true
   has_many :travel_sessions

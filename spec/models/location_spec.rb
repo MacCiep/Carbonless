@@ -13,6 +13,10 @@
 #
 #  index_locations_on_machine_id  (machine_id)
 #
+# Foreign Keys
+#
+#  fk_rails_...  (machine_id => machines.id)
+#
 require 'rails_helper'
 
 RSpec.describe Location, type: :model do

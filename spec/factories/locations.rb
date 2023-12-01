@@ -13,6 +13,10 @@
 #
 #  index_locations_on_machine_id  (machine_id)
 #
+# Foreign Keys
+#
+#  fk_rails_...  (machine_id => machines.id)
+#
 FactoryBot.define do
   factory :location do
     machine
