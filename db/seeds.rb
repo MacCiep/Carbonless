@@ -1,8 +1,8 @@
 ActiveRecord::Base.transaction do
 [
   { email: 'phebe003@interia.pl', username: 'Kitka', user_type: :normal  },
-  { email: 'test@test.com', username: 'Test', user_type: :normal  },
-  { email: 'test1@test.com', username: 'Test1', user_type: :business }
+  { email: 'test1@test.com', username: 'Test', user_type: :normal  },
+  { email: 'test2@test.com', username: 'Test1', user_type: :business }
 ].each do |user|
   User.create!(
     email: user[:email],
