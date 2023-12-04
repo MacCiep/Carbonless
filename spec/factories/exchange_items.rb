@@ -18,10 +18,11 @@
 #
 #  fk_rails_...  (user_id => users.id)
 #
-class ExchangeItem < ApplicationRecord
-  belongs_to :user
-  validates :name, :description, :status, presence: true
-  validates :name, length: { maximum: 80 }
-  validates :description, length: { maximum: 300 }
-  enum status: { inactive: 0, active: 1, cancelled: 2, exchanged: 3 }
+FactoryBot.define do
+  factory :exchange_item do
+    user
+    name { FFaker::Product.product_name }
+    description { FFaker::Lorem.paragraph }
+    status { :active }
+  end
 end
