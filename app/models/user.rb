@@ -38,6 +38,7 @@ class User < ApplicationRecord
   has_many :history_points
   has_many :travel_sessions
   has_many :users_prizes
+  has_many :exchange_items
   has_one :machine
   # has_many :prizes, through: :users_prizes
   # has_many :users_achievements

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2023_11_29_180546) do
+ActiveRecord::Schema[7.1].define(version: 2023_12_01_155932) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -60,6 +60,16 @@ ActiveRecord::Schema[7.1].define(version: 2023_11_29_180546) do
     t.datetime "updated_at", precision: nil, null: false
     t.index ["email"], name: "index_admins_on_email", unique: true
     t.index ["reset_password_token"], name: "index_admins_on_reset_password_token", unique: true
+  end
+
+  create_table "exchange_items", force: :cascade do |t|
+    t.string "name", limit: 80, null: false
+    t.string "description", limit: 300
+    t.bigint "user_id", null: false
+    t.integer "status", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_exchange_items_on_user_id"
   end
 
   create_table "history_points", force: :cascade do |t|
@@ -183,6 +193,7 @@ ActiveRecord::Schema[7.1].define(version: 2023_11_29_180546) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "exchange_items", "users"
   add_foreign_key "locations", "machines"
   add_foreign_key "machines", "partners"
   add_foreign_key "prizes", "partners"
