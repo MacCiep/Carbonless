@@ -2,8 +2,8 @@ FactoryBot.define do
   factory :prize do
     partner
     title { Faker::Name.name }
-    duration { Faker::Number.between(1, 100) }
-    price { Faker::Number.between(1, 100) }
+    duration { Faker::Number.between(from: 1, to: 100) }
+    price { Faker::Number.between(from: 1, to: 100) }
     uuid { SecureRandom.uuid }
   end
 end
