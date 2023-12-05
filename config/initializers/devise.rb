@@ -21,6 +21,7 @@ Devise.setup do |config|
       ['POST', %r{^/users/sign_in([.]json)?$}],
       ['POST', %r{^/users([.]json)?$}]
     ]
+    jwt.expiration_time = 6.hours.to_i
   end
 
   # ==> Controller configuration

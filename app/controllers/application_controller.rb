@@ -1,10 +1,4 @@
 class ApplicationController < ActionController::API
-  include Pundit::Authorization
-  include Paginable
-  include Pagy::Backend
-
-  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
-
   # before_action :authenticate_user!
   before_action :configure_permitted_parameters, if: :devise_controller?
   respond_to :json, :html
@@ -15,13 +9,5 @@ class ApplicationController < ActionController::API
     added_attrs = %i[username email encrypted_password password_confirmation]
     devise_parameter_sanitizer.permit :sign_up, keys: added_attrs
     devise_parameter_sanitizer.permit :account_update, keys: added_attrs
-  end
-
-  def business_user?
-    current_user.business?
-  end
-
-  def user_not_authorized
-    head :forbidden
   end
 end
