@@ -21,8 +21,8 @@
 FactoryBot.define do
   factory :exchange_item do
     user
-    name { FFaker::Product.product_name }
-    description { FFaker::Lorem.paragraph }
-    status { :active }
+    name { Faker::Books.name }
+    description { Faker::Lorem.paragraph }
+    status { 0 }
   end
 end

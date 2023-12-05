@@ -21,7 +21,9 @@ gem 'puma', '~> 3.11'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
-#
+
+gem 'aasm'
+
 gem 'devise'
 gem 'devise-jwt'
 

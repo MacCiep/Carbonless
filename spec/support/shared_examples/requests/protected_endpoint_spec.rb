@@ -19,11 +19,10 @@ shared_examples 'protected endpoint' do |method:, url:|
   end
 
   context 'when authorization header is present' do
+    let(:headers) { authenticated_headers({}, user) }
+    subject { send(method, url, headers: headers) rescue nil } # we don't care about the response - just a status
+
     context 'when access token is valid' do
-      subject { send(method, url, headers: headers) rescue nil } # we don't care about the response - just a status
-
-      let(:headers) { authenticated_headers({}, user) }
-
       before { subject }
 
       it { expect(response).not_to have_http_status(:unauthorized) }
@@ -40,11 +39,9 @@ shared_examples 'protected endpoint' do |method:, url:|
     end
 
     context 'when access token expired' do
-      let(:headers) { authenticated_headers({}, user) }
-
       before do
         headers
-        Timecop.travel(360000 + 1.second)
+        Timecop.travel(5.hours.to_i + 1.hour.to_i)
         subject
       end
 
