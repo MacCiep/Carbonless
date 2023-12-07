@@ -4,7 +4,6 @@ require "spec_helper"
 
 shared_examples_for "Paginated response" do
   it 'contains all paginated information' do
-    subject
     json_response = JSON.parse(response.body)
     expect(json_response['records'].size).not_to eq(nil)
     expect(json_response['metadata']).not_to eq(nil)
