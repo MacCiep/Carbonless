@@ -28,6 +28,7 @@ gem 'devise'
 gem 'devise-jwt'
 
 gem 'redis'
+gem "ruby-openai"
 gem 'sidekiq'
 gem 'faraday'
 

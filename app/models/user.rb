@@ -7,7 +7,9 @@
 #  country                :string
 #  email                  :string           default(""), not null
 #  encrypted_password     :string           default(""), not null
+#  flagged_messages       :integer          default(0), not null
 #  language               :integer          default("en"), not null
+#  locked_at              :datetime
 #  points                 :bigint           default(0), not null
 #  remember_created_at    :datetime
 #  reset_password_sent_at :datetime
@@ -15,6 +17,7 @@
 #  score                  :integer          default(0)
 #  theme                  :integer          default("light"), not null
 #  total_carbon_saved     :decimal(, )      default(0.0)
+#  unlock_token           :string
 #  user_type              :integer          default("normal")
 #  username               :string
 #  created_at             :datetime         not null
@@ -31,7 +34,8 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable,
-         :jwt_authenticatable, jwt_revocation_strategy: JwtDenyList
+         :jwt_authenticatable, :moderation_lockable,
+         jwt_revocation_strategy: JwtDenyList
 
   validates :username, :theme, :language, presence: true
   has_many :purchases

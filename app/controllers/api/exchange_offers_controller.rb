@@ -16,12 +16,11 @@ module Api
     def create
       @exchange_offer = current_user.exchange_offers.new(exchange_offer_params)
 
-      if @exchange_offer.valid?
-        authorize @exchange_offer
+      if exchange_offer_valid?
         @exchange_offer.save
         render json: ExchangeOfferBlueprint.render_as_hash(@exchange_offer), status: :created
       else
-        render json: @exchange_offer.errors, status: :unprocessable_entity
+        render json: @error, status: :unprocessable_entity
       end
     end
 
@@ -35,6 +34,19 @@ module Api
     end
 
     private
+
+    #TODO: Refactor it!, think about better solution to connect it with similar method in exchange_items_controller.rb
+    def exchange_offer_valid?
+      if @exchange_offer.invalid?
+        @error = @exchange_offer.errors.full_messages
+      elsif !Moderation::ModerateMessage.new(current_user, @exchange_offer.description).call
+        @error = 'Please do not use bad words in description, if this happens again your account will be blocked'
+      else
+        return true
+      end
+
+      false
+    end
 
     def set_exchange_offer
       @exchange_offer = ExchangeOffer.find(params[:id])

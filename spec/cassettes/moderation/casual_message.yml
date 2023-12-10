@@ -1,0 +1,97 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://api.openai.com/v1/moderations
+    body:
+      encoding: UTF-8
+      string: '{"input":"Omnis qui aperiam. Voluptas eaque beatae. Illum doloremque
+        accusamus."}'
+    headers:
+      Content-Type:
+      - application/json
+      Authorization:
+      - Bearer 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
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Sun, 10 Dec 2023 14:54:43 GMT
+      Content-Type:
+      - application/json
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Openai-Version:
+      - '2020-10-01'
+      Openai-Organization:
+      - user-awjeyoaxlbrn9pshmkhllrop
+      X-Request-Id:
+      - 4ce241752f12c0ba0e00489090114b02
+      Openai-Processing-Ms:
+      - '284'
+      Strict-Transport-Security:
+      - max-age=15724800; includeSubDomains
+      Cf-Cache-Status:
+      - DYNAMIC
+      Set-Cookie:
+      - __cf_bm=OUv45lB8rJsvQgsM6Df7igSWdAOxSt6hex0l7633eWo-1702220083-0-ATY6biX2/b+F0uiHgrw0TyBwglAqZoHYy33zd9TAsMpJmLpCpP/RRTiKZZdFr8LM1/4WuaUs2c3P4i8MwZgRpd0=;
+        path=/; expires=Sun, 10-Dec-23 15:24:43 GMT; domain=.api.openai.com; HttpOnly;
+        Secure; SameSite=None
+      - _cfuvid=ask4KPcsICZMLClHaFY2py4bv.7R6S3b2_iiqjzIV.o-1702220083858-0-604800000;
+        path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 833653216ad30482-FRA
+      Alt-Svc:
+      - h3=":443"; ma=86400
+    body:
+      encoding: ASCII-8BIT
+      string: |-
+        {
+          "id": "modr-8UFUZgYuLJwObQ9XxGMeQvUEagmIt",
+          "model": "text-moderation-006",
+          "results": [
+            {
+              "flagged": false,
+              "categories": {
+                "sexual": false,
+                "hate": false,
+                "harassment": false,
+                "self-harm": false,
+                "sexual/minors": false,
+                "hate/threatening": false,
+                "violence/graphic": false,
+                "self-harm/intent": false,
+                "self-harm/instructions": false,
+                "harassment/threatening": false,
+                "violence": false
+              },
+              "category_scores": {
+                "sexual": 0.00006615363236051053,
+                "hate": 0.00033762448583729565,
+                "harassment": 0.000568646140396595,
+                "self-harm": 5.975551175652072e-6,
+                "sexual/minors": 1.0380382775565522e-7,
+                "hate/threatening": 6.695440788462292e-7,
+                "violence/graphic": 0.00002383294668106828,
+                "self-harm/intent": 5.13269696966745e-7,
+                "self-harm/instructions": 4.2665865862545616e-7,
+                "harassment/threatening": 0.00010518384806346148,
+                "violence": 0.0002491522172931582
+              }
+            }
+          ]
+        }
+  recorded_at: Sun, 10 Dec 2023 14:54:43 GMT
+recorded_with: VCR 6.2.0
