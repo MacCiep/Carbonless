@@ -26,6 +26,15 @@ class ExchangeOffer < ApplicationRecord
 
   validates :user, :exchange_item, :description, :status, presence: true
   validates :description, length: { maximum: 250 }
+  validate :offer_for_own_item?
 
   enum status: { pending: 0, rejected: 1, accepted: 2, completed: 3 }
+
+  private
+
+  def offer_for_own_item?
+    return unless exchange_item&.user_id == user_id
+
+    errors.add(:exchange_item, "can't create offer for your own item")
+  end
 end

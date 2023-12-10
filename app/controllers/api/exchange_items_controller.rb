@@ -15,10 +15,11 @@ module Api
     def create
       @exchange_item = current_user.exchange_items.new(exchange_item_params)
 
-      if @exchange_item.save
+      if exchange_item_valid?
+        @exchange_item.save
         render json: ExchangeItemBlueprint.render_as_hash(@exchange_item), status: :created
       else
-        render json: @exchange_item.errors, status: :unprocessable_entity
+        render json: @error, status: :unprocessable_entity
       end
     end
 
@@ -83,9 +84,22 @@ module Api
       @exchange_item = ExchangeItem.find(params[:id])
     end
 
+    #TODO: Refactor it!, think about better solution to connect it with similar method in exchange_offers_controller.rb
+    def exchange_item_valid?
+      if @exchange_item.invalid?
+        @error = @exchange_item.errors.full_messages
+      elsif !Moderation::ModerateMessage.new(current_user, @exchange_item.description).call
+        @error = 'Please do not use bad words in description, if this happens again your account will be blocked'
+      else
+        return true
+      end
+
+      false
+    end
+
     # Only allow a trusted parameter "white list" through.
     def exchange_item_params
-      params.require(:exchange_item).permit(:name, :description, :user_id)
+      params.require(:exchange_item).permit(:name, :description)
     end
   end
 end

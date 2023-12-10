@@ -34,6 +34,17 @@ RSpec.describe ExchangeOffer, type: :model do
     it { should validate_presence_of(:description) }
     it { should validate_presence_of(:status) }
     it { should validate_length_of(:description).is_at_most(250) }
+
+    context '#offer_for_own_item?' do
+      let(:user) { create(:user) }
+      let(:exchange_item) { create(:exchange_item, user:) }
+      let(:exchange_offer) { build(:exchange_offer, user: user, exchange_item: exchange_item) }
+
+      it 'adds error when user is trying to offer his own item' do
+        exchange_offer.valid?
+        expect(exchange_offer.errors[:exchange_item]).to include("can't create offer for your own item")
+      end
+    end
   end
 
   describe 'enums' do
