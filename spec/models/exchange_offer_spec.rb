@@ -2,13 +2,14 @@
 #
 # Table name: exchange_offers
 #
-#  id               :bigint           not null, primary key
-#  description      :text             not null
-#  status           :integer          default("pending"), not null
-#  created_at       :datetime         not null
-#  updated_at       :datetime         not null
-#  exchange_item_id :bigint           not null
-#  user_id          :bigint           not null
+#  id                   :bigint           not null, primary key
+#  description          :text             not null
+#  response_description :string
+#  status               :integer          default("pending"), not null
+#  created_at           :datetime         not null
+#  updated_at           :datetime         not null
+#  exchange_item_id     :bigint           not null
+#  user_id              :bigint           not null
 #
 # Indexes
 #
@@ -48,7 +49,51 @@ RSpec.describe ExchangeOffer, type: :model do
   end
 
   describe 'enums' do
-    it { should define_enum_for(:status).with_values(pending: 0, rejected: 1, accepted: 2, completed: 3) }
+    it { should define_enum_for(:status).with_values(pending: 0, rejected: 1, accepted: 2, completed: 3).with_prefix(:status) }
   end
 
+  describe 'aasm' do
+    let(:record) { create(:exchange_offer, status:) }
+
+    context 'when status is pending' do
+      let(:status) { 'pending' }
+
+      it_behaves_like 'allows for transition to', :accepted
+      it_behaves_like 'allows for transition to', :rejected
+
+      it_behaves_like 'does not allow for transition to', :pending
+      it_behaves_like 'does not allow for transition to', :completed
+
+      it_behaves_like 'with respond to event', :accept
+      it_behaves_like 'with respond to event', :reject
+    end
+
+    context 'when status is accepted' do
+      let(:status) { 'accepted' }
+
+      it_behaves_like 'allows for transition to', :completed
+
+      it_behaves_like 'does not allow for transition to', :accepted
+
+      it_behaves_like 'with respond to event', :complete
+    end
+
+    context 'when status is rejected' do
+      let(:status) { 'rejected' }
+
+      it_behaves_like 'does not allow for transition to', :accepted
+      it_behaves_like 'does not allow for transition to', :rejected
+      it_behaves_like 'does not allow for transition to', :pending
+      it_behaves_like 'does not allow for transition to', :completed
+    end
+
+    context 'when status is completed' do
+      let(:status) { 'completed' }
+
+      it_behaves_like 'does not allow for transition to', :accepted
+      it_behaves_like 'does not allow for transition to', :rejected
+      it_behaves_like 'does not allow for transition to', :pending
+      it_behaves_like 'does not allow for transition to', :completed
+    end
+  end
 end

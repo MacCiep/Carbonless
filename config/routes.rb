@@ -46,7 +46,13 @@ Rails.application.routes.draw do
         patch 'inactivate'
       end
     end
-    resources :exchange_offers, only: [:index, :show, :create, :destroy]
+    resources :exchange_offers, only: [:index, :show, :create, :destroy] do
+      member do
+        patch 'accept'
+        patch 'reject'
+        patch 'complete'
+      end
+    end
   end
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end

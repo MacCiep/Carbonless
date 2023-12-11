@@ -2,13 +2,14 @@
 #
 # Table name: exchange_offers
 #
-#  id               :bigint           not null, primary key
-#  description      :text             not null
-#  status           :integer          default("pending"), not null
-#  created_at       :datetime         not null
-#  updated_at       :datetime         not null
-#  exchange_item_id :bigint           not null
-#  user_id          :bigint           not null
+#  id                   :bigint           not null, primary key
+#  description          :text             not null
+#  response_description :string
+#  status               :integer          default("pending"), not null
+#  created_at           :datetime         not null
+#  updated_at           :datetime         not null
+#  exchange_item_id     :bigint           not null
+#  user_id              :bigint           not null
 #
 # Indexes
 #
