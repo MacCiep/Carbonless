@@ -35,17 +35,18 @@ module Api
 
     def accept
       authorize @exchange_offer
-
-      if @exchange_offer.accept!
+      @exchange_offer.response_description = response_params[:response_description]
+      if exchange_offer_valid?(@exchange_offer.response_description) && @exchange_offer.accept!
+        @exchange_offer.save
         head :ok
       else
-        render json: @exchange_offer.errors, status: :unprocessable_entity
+        render json: @error, status: :unprocessable_entity
       end
     end
 
     def reject
       authorize @exchange_offer
-      @exchange_offer.response_description = reject_params[:response_description]
+      @exchange_offer.response_description = response_params[:response_description]
       if exchange_offer_valid?(@exchange_offer.response_description) && @exchange_offer.reject
         @exchange_offer.save
         head :ok
@@ -87,7 +88,7 @@ module Api
       params.require(:exchange_offer).permit(:exchange_item_id, :description)
     end
 
-    def reject_params
+    def response_params
       params.require(:exchange_offer).permit(:response_description)
     end
 

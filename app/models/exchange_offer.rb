@@ -30,7 +30,7 @@ class ExchangeOffer < ApplicationRecord
   validates :user, :exchange_item, :description, :status, presence: true
   validates :description, length: { maximum: 250 }
   validate :offer_for_own_item?
-  validate :rejection_with_description?, if: :status_rejected?
+  validate :response_with_description?, if: :status_rejected? || :status_accepted?
 
   enum status: { pending: 0, rejected: 1, accepted: 2, completed: 3 }, _prefix: :status
 
@@ -59,7 +59,7 @@ class ExchangeOffer < ApplicationRecord
     errors.add(:exchange_item, "can't create offer for your own item")
   end
 
-  def rejection_with_description?
+  def response_with_description?
     response_description.present?
   end
 end
