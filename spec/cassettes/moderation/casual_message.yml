@@ -11,7 +11,7 @@ http_interactions:
       Content-Type:
       - application/json
       Authorization:
-      - Bearer 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
+      - Bearer THE_KEY
       Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
       Accept:
