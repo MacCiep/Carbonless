@@ -2,6 +2,7 @@
 require 'spec_helper'
 require 'support/factory_bot'
 require 'vcr_setup'
+require 'aasm/rspec'
 
 ENV['RAILS_ENV'] ||= 'test'
 require File.expand_path('../config/environment', __dir__)

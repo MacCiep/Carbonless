@@ -1,6 +1,6 @@
 module Api
   class ExchangeOffersController < ApiController
-    before_action :set_exchange_offer, only: [:show, :destroy]
+    before_action :set_exchange_offer, only: [:show, :destroy, :accept, :reject, :complete]
     before_action :set_scope, only: [:index]
 
     def index
@@ -16,7 +16,7 @@ module Api
     def create
       @exchange_offer = current_user.exchange_offers.new(exchange_offer_params)
 
-      if exchange_offer_valid?
+      if exchange_offer_valid?(@exchange_offer.description)
         @exchange_offer.save
         render json: ExchangeOfferBlueprint.render_as_hash(@exchange_offer), status: :created
       else
@@ -33,13 +33,44 @@ module Api
       end
     end
 
+    def accept
+      authorize @exchange_offer
+
+      if @exchange_offer.accept!
+        head :ok
+      else
+        render json: @exchange_offer.errors, status: :unprocessable_entity
+      end
+    end
+
+    def reject
+      authorize @exchange_offer
+      @exchange_offer.response_description = reject_params[:response_description]
+      if exchange_offer_valid?(@exchange_offer.response_description) && @exchange_offer.reject
+        @exchange_offer.save
+        head :ok
+      else
+        render json: @error, status: :unprocessable_entity
+      end
+    end
+
+    def complete
+      authorize @exchange_offer
+
+      if @exchange_offer.complete!
+        head :ok
+      else
+        render json: @exchange_offer.errors, status: :unprocessable_entity
+      end
+    end
+
     private
 
     #TODO: Refactor it!, think about better solution to connect it with similar method in exchange_items_controller.rb
-    def exchange_offer_valid?
+    def exchange_offer_valid?(moderation_field)
       if @exchange_offer.invalid?
         @error = @exchange_offer.errors.full_messages
-      elsif !Moderation::ModerateMessage.new(current_user, @exchange_offer.description).call
+      elsif !Moderation::ModerateMessage.new(current_user, moderation_field).call
         @error = 'Please do not use bad words in description, if this happens again your account will be blocked'
       else
         return true
@@ -54,6 +85,10 @@ module Api
 
     def exchange_offer_params
       params.require(:exchange_offer).permit(:exchange_item_id, :description)
+    end
+
+    def reject_params
+      params.require(:exchange_offer).permit(:response_description)
     end
 
     def set_scope

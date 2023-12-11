@@ -37,4 +37,52 @@ RSpec.describe ExchangeItem, type: :model do
   describe 'enums' do
     it { should define_enum_for(:status).with_values(inactive: 0, active: 1, cancelled: 2, exchanged: 3).with_prefix(:status) }
   end
+
+  describe 'aasm' do
+    let(:record) { create(:exchange_item, status:) }
+
+    context 'when status is inactive' do
+      let(:status) { 'inactive' }
+
+      it_behaves_like 'allows for transition to', :active
+      it_behaves_like 'allows for transition to', :cancelled
+
+      it_behaves_like 'does not allow for transition to', :inactive
+      it_behaves_like 'does not allow for transition to', :exchanged
+
+      it_behaves_like 'with respond to event', :activate
+      it_behaves_like 'with respond to event', :cancel
+    end
+
+    context 'when status is active' do
+      let(:status) { 'active' }
+
+      it_behaves_like 'allows for transition to', :inactive
+      it_behaves_like 'allows for transition to', :exchanged
+      it_behaves_like 'allows for transition to', :cancelled
+
+      it_behaves_like 'does not allow for transition to', :active
+
+      it_behaves_like 'with respond to event', :exchange
+      it_behaves_like 'with respond to event', :inactivate
+    end
+
+    context 'when status is cancelled' do
+      let(:status) { 'cancelled' }
+
+      it_behaves_like 'does not allow for transition to', :active
+      it_behaves_like 'does not allow for transition to', :cancelled
+      it_behaves_like 'does not allow for transition to', :inactive
+      it_behaves_like 'does not allow for transition to', :exchanged
+    end
+
+    context 'when status is exchanged' do
+      let(:status) { 'exchanged' }
+
+      it_behaves_like 'does not allow for transition to', :active
+      it_behaves_like 'does not allow for transition to', :cancelled
+      it_behaves_like 'does not allow for transition to', :inactive
+      it_behaves_like 'does not allow for transition to', :exchanged
+    end
+  end
 end
