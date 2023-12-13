@@ -27,5 +27,6 @@ FactoryBot.define do
     exchange_item
     description { Faker::Lorem.paragraph }
     status { :pending }
+    response_description { Faker::Lorem.paragraph }
   end
 end

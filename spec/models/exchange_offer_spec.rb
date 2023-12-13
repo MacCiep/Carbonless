@@ -46,6 +46,35 @@ RSpec.describe ExchangeOffer, type: :model do
         expect(exchange_offer.errors[:exchange_item]).to include("can't create offer for your own item")
       end
     end
+
+    context '#offer_already_pending?' do
+      let(:user) { create(:user) }
+      let(:exchange_item) { create(:exchange_item) }
+      let(:new_exchange_offer) { build(:exchange_offer, user: user, exchange_item: exchange_item) }
+
+      before do
+        create(:exchange_offer, user: user, exchange_item: exchange_item)
+      end
+
+      it 'adds error when user\'s pending exchange offer for that item already exists' do
+        new_exchange_offer.valid?
+        expect(new_exchange_offer.errors[:exchange_item]).to include("You already have pending offer for this item")
+      end
+    end
+
+    context '#response_with_description?' do
+      let(:exchange_offer) { create(:exchange_offer, response_description: nil) }
+
+      it 'adds error when exchange item is rejected without response description' do
+        exchange_offer.reject!
+        expect(exchange_offer.errors[:response_description]).to include("can't be blank")
+      end
+
+      it 'adds error when exchange item is accepted without response description' do
+        exchange_offer.accept!
+        expect(exchange_offer.errors[:response_description]).to include("can't be blank")
+      end
+    end
   end
 
   describe 'enums' do
@@ -94,6 +123,15 @@ RSpec.describe ExchangeOffer, type: :model do
       it_behaves_like 'does not allow for transition to', :rejected
       it_behaves_like 'does not allow for transition to', :pending
       it_behaves_like 'does not allow for transition to', :completed
+    end
+
+    context 'when event complete is called' do
+      let(:exchange_item) { create(:exchange_item, status: 'active') }
+      let(:exchange_offer) { create(:exchange_offer, exchange_item: exchange_item, status: 'accepted') }
+
+      it 'changes exchange item status to exchanged' do
+        expect { exchange_offer.complete! }.to change { exchange_item.reload.status }.from('active').to('exchanged')
+      end
     end
   end
 end

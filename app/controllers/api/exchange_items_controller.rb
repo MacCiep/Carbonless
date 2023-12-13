@@ -1,6 +1,6 @@
 module Api
   class ExchangeItemsController < ApiController
-    before_action :set_exchange_item, only: [:show, :update, :destroy, :activate, :cancel, :exchange, :inactivate]
+    before_action :set_exchange_item, only: [:show, :update, :destroy, :activate, :cancel, :inactivate]
 
     def index
       @collection = ExchangeItem.status_active.order(created_at: :desc)
@@ -48,16 +48,6 @@ module Api
     def cancel
       authorize @exchange_item
       if @exchange_item.update(status: :cancelled)
-        head :ok
-      else
-        @error = @exchange_item.errors.full_messages
-        render json: error, status: :unprocessable_entity
-      end
-    end
-
-    def exchange
-      authorize @exchange_item
-      if @exchange_item.update(status: :exchanged)
         head :ok
       else
         @error = @exchange_item.errors.full_messages

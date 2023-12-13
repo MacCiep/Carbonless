@@ -349,10 +349,15 @@ RSpec.describe Api::ExchangeOffersController, type: :request do
 
         context 'when user is an owner of exchange offer' do
           let(:user) { create(:user) }
-          let!(:exchange_offer) { create(:exchange_offer, user: user, status: :accepted) }
+          let!(:exchange_item) { create(:exchange_item, status: :active)}
+          let!(:exchange_offer) { create(:exchange_offer, user: user, status: :accepted, exchange_item:) }
 
           it 'completes exchange offer' do
             expect { subject }.to change { exchange_offer.reload.status }.from('accepted').to('completed')
+          end
+
+          it 'changes exchange item status to exchanged' do
+            expect { subject }.to change { exchange_offer.exchange_item.reload.status }.from('active').to('exchanged')
           end
 
           it 'returns 200' do

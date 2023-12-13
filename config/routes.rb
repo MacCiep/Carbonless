@@ -42,7 +42,6 @@ Rails.application.routes.draw do
       member do
         patch 'activate'
         patch 'cancel'
-        patch 'exchange'
         patch 'inactivate'
       end
     end
