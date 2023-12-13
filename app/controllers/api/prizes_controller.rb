@@ -8,11 +8,12 @@ module Api
     end
 
     def create
-      prize = Prize.create(prize_params)
-      if prize.save
-        render json: prize, status: :created
+      @prize = Prize.create(prize_params)
+      if @prize.save
+        render json: @prize, status: :created
       else
-        render json: prize.errors.full_messages, status: :unprocessable_entity
+        @error = @prize.errors.full_messages
+        render json: error, status: :unprocessable_entity
       end
     end
 
@@ -24,7 +25,8 @@ module Api
       if @prize.update(prize_params)
         render status: :ok
       else
-        render json: @prize.errors.full_messages, status: :unprocessable_entity
+        @error = @prize.errors.full_messages
+        render json: error, status: :unprocessable_entity
       end
     end
 
@@ -32,7 +34,8 @@ module Api
       if @prize.destroy
         render status: :ok
       else
-        render json: @prize..errors.full_messages, status: :unprocessable_entity
+        @error = @prize.errors.full_messages
+        render json: error, status: :unprocessable_entity
       end
     end
 

@@ -2,6 +2,7 @@ module Api
   class ApiController < ApplicationController
     include Pundit::Authorization
     include Paginable
+    include ErrorFormatable
     include Pagy::Backend
 
     rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized

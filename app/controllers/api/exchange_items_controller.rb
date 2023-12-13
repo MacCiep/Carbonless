@@ -19,7 +19,7 @@ module Api
         @exchange_item.save
         render json: ExchangeItemBlueprint.render_as_hash(@exchange_item), status: :created
       else
-        render json: @error, status: :unprocessable_entity
+        render json: error, status: :unprocessable_entity
       end
     end
 
@@ -28,7 +28,8 @@ module Api
       if @exchange_item.update(exchange_item_params)
         render json: @exchange_item
       else
-        render json: @exchange_item.errors, status: :unprocessable_entity
+        @error = @exchange_item.errors.full_messages
+        render json: error, status: :unprocessable_entity
       end
     end
 
@@ -37,7 +38,8 @@ module Api
       if @exchange_item.activate!
         head :ok
       else
-        render json: @exchange_item.errors, status: :unprocessable_entity
+        @error = @exchange_item.errors.full_messages
+        render json: error, status: :unprocessable_entity
       end
     end
 
@@ -46,7 +48,8 @@ module Api
       if @exchange_item.update(status: :cancelled)
         head :ok
       else
-        render json: @exchange_item.errors, status: :unprocessable_entity
+        @error = @exchange_item.errors.full_messages
+        render json: error, status: :unprocessable_entity
       end
     end
 
@@ -55,7 +58,8 @@ module Api
       if @exchange_item.update(status: :exchanged)
         head :ok
       else
-        render json: @exchange_item.errors, status: :unprocessable_entity
+        @error = @exchange_item.errors.full_messages
+        render json: error, status: :unprocessable_entity
       end
     end
 
@@ -64,7 +68,8 @@ module Api
       if @exchange_item.update(status: :inactive)
         head :ok
       else
-        render json: @exchange_item.errors, status: :unprocessable_entity
+        @error = @exchange_item.errors.full_messages
+        render json: error, status: :unprocessable_entity
       end
     end
 
@@ -73,7 +78,8 @@ module Api
       if @exchange_item.destroy
         head :no_content
       else
-        render json: @exchange_item.errors, status: :unprocessable_entity
+        @error = @exchange_item.errors.full_messages
+        render json: error, status: :unprocessable_entity
       end
     end
 

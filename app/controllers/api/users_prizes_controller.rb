@@ -28,7 +28,8 @@ module Api
       if @prize.update(active: false)
         head :ok
       else
-        render json: @prize.errors.full_messages, status: :unprocessable_entity
+        @error = @prize.errors.full_messages
+        render json: error, status: :unprocessable_entity
       end
     end
 
