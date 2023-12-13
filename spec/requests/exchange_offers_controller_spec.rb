@@ -114,19 +114,27 @@ RSpec.describe Api::ExchangeOffersController, type: :request do
 
         before { subject }
 
+        # it 'test' do
+        #   debugger
+        # end
         it_behaves_like 'response status', :unprocessable_entity
       end
 
       context 'when message includes profanity', vcr: { cassette_name: 'moderation/flagged_message' } do
         let(:exchange_item) { create(:exchange_item) }
         let(:params) { { exchange_offer: { exchange_item_id: exchange_item.id, description: 'Really bad word' } } }
+        let(:expected_response) do
+          {
+            "errors" => ['Please do not use bad words in description, if this happens again your account will be blocked']
+          }
+        end
 
         before { subject }
 
         it_behaves_like 'response status', :unprocessable_entity
 
         it 'returns' do
-          expect(response.body).to eq('Please do not use bad words in description, if this happens again your account will be blocked')
+          expect(JSON.parse(response.body)).to eq(expected_response)
         end
       end
 
@@ -205,6 +213,11 @@ RSpec.describe Api::ExchangeOffersController, type: :request do
         let(:user) { create(:user) }
         let(:exchange_item) { create(:exchange_item, user: user) }
         let!(:exchange_offer) { create(:exchange_offer, exchange_item:) }
+        let(:expected_response) do
+          {
+            "errors" => ['Please do not use bad words in description, if this happens again your account will be blocked']
+          }
+        end
 
         let(:params) { { exchange_offer: { response_description: 'Really bad word' } } }
 
@@ -215,7 +228,7 @@ RSpec.describe Api::ExchangeOffersController, type: :request do
         end
 
         it 'returns' do
-          expect(response.body).to eq('Please do not use bad words in description, if this happens again your account will be blocked')
+          expect(JSON.parse(response.body)).to eq(expected_response)
         end
       end
 
@@ -258,7 +271,6 @@ RSpec.describe Api::ExchangeOffersController, type: :request do
         let(:exchange_item) { create(:exchange_item, user: user) }
         let!(:exchange_offer) { create(:exchange_offer, exchange_item:) }
 
-
         before { subject }
 
         it_behaves_like 'response status', :bad_request
@@ -268,6 +280,11 @@ RSpec.describe Api::ExchangeOffersController, type: :request do
         let(:user) { create(:user) }
         let(:exchange_item) { create(:exchange_item, user: user) }
         let!(:exchange_offer) { create(:exchange_offer, exchange_item:) }
+        let(:expected_response) do
+          {
+            "errors" => ['Please do not use bad words in description, if this happens again your account will be blocked']
+          }
+        end
 
         let(:params) { { exchange_offer: { response_description: 'Really bad word' } } }
 
@@ -278,7 +295,7 @@ RSpec.describe Api::ExchangeOffersController, type: :request do
         end
 
         it 'returns' do
-          expect(response.body).to eq('Please do not use bad words in description, if this happens again your account will be blocked')
+          expect(JSON.parse(response.body)).to eq(expected_response)
         end
       end
 
@@ -288,7 +305,6 @@ RSpec.describe Api::ExchangeOffersController, type: :request do
         let!(:exchange_offer) { create(:exchange_offer, exchange_item:) }
 
         let(:params) { { exchange_offer: { response_description: Faker::Lorem.paragraph } } }
-
 
         it 'rejects exchange offer' do
           expect { subject }.to change { exchange_offer.reload.status }.from('pending').to('rejected')

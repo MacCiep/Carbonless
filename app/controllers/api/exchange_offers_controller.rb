@@ -20,7 +20,7 @@ module Api
         @exchange_offer.save
         render json: ExchangeOfferBlueprint.render_as_hash(@exchange_offer), status: :created
       else
-        render json: @error, status: :unprocessable_entity
+        render json: error, status: :unprocessable_entity
       end
     end
 
@@ -29,7 +29,8 @@ module Api
       if @exchange_offer.destroy
         head :no_content
       else
-        render json: @exchange_offer.errors, status: :unprocessable_entity
+        @error = @exchange_offer.errors.full_messages
+        render json: error, status: :unprocessable_entity
       end
     end
 
@@ -40,7 +41,7 @@ module Api
         @exchange_offer.save
         head :ok
       else
-        render json: @error, status: :unprocessable_entity
+        render json: error, status: :unprocessable_entity
       end
     end
 
@@ -51,7 +52,7 @@ module Api
         @exchange_offer.save
         head :ok
       else
-        render json: @error, status: :unprocessable_entity
+        render json: error, status: :unprocessable_entity
       end
     end
 
@@ -61,7 +62,8 @@ module Api
       if @exchange_offer.complete!
         head :ok
       else
-        render json: @exchange_offer.errors, status: :unprocessable_entity
+        @error = @exchange_offer.errors.full_messages
+        render json: error, status: :unprocessable_entity
       end
     end
 

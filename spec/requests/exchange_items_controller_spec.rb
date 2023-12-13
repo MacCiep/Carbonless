@@ -56,13 +56,18 @@ RSpec.describe Api::ExchangeItemsController, type: :request do
 
       context 'when message includes profanity', vcr: { cassette_name: 'moderation/flagged_message' } do
         let(:params) { { exchange_item: { name: Faker::Books.name, description: 'Really bad word' } } }
+        let(:expected_response) do
+          {
+            "errors" => ['Please do not use bad words in description, if this happens again your account will be blocked']
+          }
+        end
 
         before { subject }
 
         it_behaves_like 'response status', :unprocessable_entity
 
         it 'returns' do
-          expect(response.body).to eq('Please do not use bad words in description, if this happens again your account will be blocked')
+          expect(JSON.parse(response.body)).to eq(expected_response)
         end
       end
 
