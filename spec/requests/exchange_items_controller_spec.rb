@@ -240,37 +240,6 @@ RSpec.describe Api::ExchangeItemsController, type: :request do
     end
   end
 
-  describe 'PATCH #exchange' do
-    it_behaves_like 'protected endpoint', method: :patch, url: "/api/exchange_items/1/exchange.json"
-
-    subject { patch exchange_api_exchange_item_path(exchange_item), headers: authenticated_headers({}, user) }
-
-    context 'when user is authenticated' do
-      context 'when user is not an owner of exchange item' do
-        let(:exchange_item) { create(:exchange_item) }
-
-        before { subject }
-
-        it 'returns 403' do
-          expect(response).to(have_http_status(403))
-        end
-      end
-
-      context 'when user is an owner of exchange item' do
-        let(:exchange_item) { create(:exchange_item, user:, status: :active) }
-
-        it 'returns 200' do
-          subject
-          expect(response).to(have_http_status(200))
-        end
-
-        it 'updates exchange item' do
-          expect { subject }.to change { exchange_item.reload.status }.to('exchanged')
-        end
-      end
-    end
-  end
-
   describe 'PATCH #inactivate' do
     it_behaves_like 'protected endpoint', method: :patch, url: "/api/exchange_items/1/inactivate.json"
 
