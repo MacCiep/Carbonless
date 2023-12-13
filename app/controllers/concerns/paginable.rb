@@ -3,7 +3,7 @@ module Paginable
 
   def paginated_response
     {
-      records: @records,
+      records: @collection,
       metadata: pagy_metadata(@pagy)
     }
   end

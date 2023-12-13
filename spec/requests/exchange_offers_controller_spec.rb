@@ -60,6 +60,22 @@ RSpec.describe Api::ExchangeOffersController, type: :request do
           expect(JSON.parse(response.body)['records'].count).to eq(1)
         end
       end
+
+      context 'when status is provided' do
+        let(:params) { { scope: 'my', status: 'accepted' } }
+
+        let!(:exchange_offer) { create(:exchange_offer, status: :accepted, user:) }
+        let!(:other_exchange_offer) { create(:exchange_offer, status: :pending, user:) }
+
+        before { subject }
+
+        it_behaves_like "Paginated response"
+
+        it 'returns only exchange offers with provided status' do
+          expect(JSON.parse(response.body)['records'][0].to_json).to eq(ExchangeOfferBlueprint.render_as_hash(exchange_offer).to_json)
+          expect(JSON.parse(response.body)['records'].count).to eq(1)
+        end
+      end
     end
   end
 

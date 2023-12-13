@@ -4,7 +4,7 @@ module Api
     before_action :set_prize, only: %i[create]
 
     def index
-      @pagy, @records = pagy(current_user.users_prizes)
+      @pagy, @collection = pagy(current_user.users_prizes)
       render json: paginated_response, status: :ok
     end
 

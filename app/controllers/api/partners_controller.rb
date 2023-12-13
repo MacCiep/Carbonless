@@ -10,8 +10,8 @@ module Api
           range: range
         )
       else
-        @pagy, @records = pagy(scoped_partners)
-        @records = PartnerBlueprint.render_as_hash(@records)
+        @pagy, @collection = pagy(scoped_partners)
+        @collection = PartnerBlueprint.render_as_hash(@collection)
         response = paginated_response
       end
 

@@ -4,6 +4,7 @@ module Api
     include Paginable
     include ErrorFormatable
     include Pagy::Backend
+    include Filterable
 
     rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
