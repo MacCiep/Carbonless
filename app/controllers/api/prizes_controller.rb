@@ -3,7 +3,7 @@ module Api
     before_action :set_prize, only: %i[update show destroy]
 
     def index
-      @pagy, @records = pagy(Prize.all.order("id ASC").except(:uuid))
+      @pagy, @collection = pagy(Prize.all.order("id ASC").except(:uuid))
       render json: paginated_response, status: :ok
     end
 

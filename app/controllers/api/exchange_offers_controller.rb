@@ -1,11 +1,12 @@
 module Api
   class ExchangeOffersController < ApiController
     before_action :set_exchange_offer, only: [:show, :destroy, :accept, :reject, :complete]
-    before_action :set_scope, only: [:index]
+    before_action :set_collection, only: [:index]
 
     def index
-      @pagy, @records = pagy(@scope)
-      @records = ExchangeOfferBlueprint.render_as_hash(@records)
+      apply_filters
+      @pagy, @collection = pagy(@collection)
+      @collection = ExchangeOfferBlueprint.render_as_hash(@collection)
       render json: paginated_response
     end
 
@@ -94,12 +95,16 @@ module Api
       params.require(:exchange_offer).permit(:response_description)
     end
 
-    def set_scope
+    def attributes_filter_params
+      params.permit(:status)
+    end
+
+    def set_collection
       case params[:scope].to_s.downcase
       when 'my'
-        @scope = current_user.exchange_offers
+        @collection = current_user.exchange_offers
       when 'others'
-        @scope = ExchangeOffer.includes(:exchange_item).where(exchange_item: { user_id: current_user.id })
+        @collection = ExchangeOffer.includes(:exchange_item).where(exchange_item: { user_id: current_user.id })
       else
         render json: { error: 'Invalid scope parameter' }, status: :unprocessable_entity
       end

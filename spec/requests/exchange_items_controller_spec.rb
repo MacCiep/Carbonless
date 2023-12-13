@@ -7,14 +7,41 @@ RSpec.describe Api::ExchangeItemsController, type: :request do
     it_behaves_like 'protected endpoint', method: :get, url: '/api/exchange_items.json'
 
     context 'when user is logged in' do
-      subject { get api_exchange_items_path, headers: headers }
+      subject { get api_exchange_items_path, params:, headers: headers }
       let(:headers) { authenticated_headers({}, user) }
-      before do
-        create(:exchange_item)
-        subject
+
+      context 'when no params are passed' do
+        let(:params) { {} }
+
+        before do
+          create(:exchange_item, status: :active)
+          create(:exchange_item, status: :inactive)
+          subject
+        end
+
+        it_behaves_like "Paginated response"
+
+        it 'returns only active exchange items' do
+          expect(JSON.parse(response.body)['records'].count).to eq(1)
+        end
       end
 
-      it_behaves_like "Paginated response"
+      context 'when user_id param is present' do
+        let(:user) { create(:user) }
+
+        let(:params) { { user_id: user.id } }
+
+        before do
+          create(:exchange_item, status: :active, user: user)
+          create(:exchange_item, status: :active)
+          subject
+        end
+
+        it 'returns exchange items of user' do
+          expect(JSON.parse(response.body)['records'].first['user_id']).to eq(user.id)
+          expect(JSON.parse(response.body)['records'].count).to eq(1)
+        end
+      end
     end
   end
 
@@ -33,6 +60,7 @@ RSpec.describe Api::ExchangeItemsController, type: :request do
           id: exchange_item.id,
           name: exchange_item.name,
           updated_at: exchange_item.updated_at,
+          user_id: exchange_item.user_id
         }
       end
 

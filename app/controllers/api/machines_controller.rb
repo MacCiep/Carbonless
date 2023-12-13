@@ -3,7 +3,7 @@ module Api
     before_action :set_machine, only: %i[show update destroy]
 
     def index
-      @pagy, @records = pagy(Machine.all)
+      @pagy, @collection = pagy(Machine.all)
       render json: paginated_response, status: :ok
     end
 

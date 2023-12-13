@@ -3,8 +3,10 @@ module Api
     before_action :set_exchange_item, only: [:show, :update, :destroy, :activate, :cancel, :exchange, :inactivate]
 
     def index
-      @pagy, @records = pagy(ExchangeItem.all)
-      @records = ExchangeItemBlueprint.render_as_hash(@records)
+      @collection = ExchangeItem.status_active.order(created_at: :desc)
+      apply_filters
+      @pagy, @collection = pagy(@collection)
+      @collection = ExchangeItemBlueprint.render_as_hash(@collection)
       render json: paginated_response
     end
 
@@ -101,6 +103,10 @@ module Api
       end
 
       false
+    end
+
+    def attributes_filter_params
+      params.permit( :user_id)
     end
 
     # Only allow a trusted parameter "white list" through.

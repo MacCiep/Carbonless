@@ -4,8 +4,8 @@ module Partners
       if params[:latitude] && params[:longitude]
         response = LocationBlueprint.render_as_hash(scoped_locations)
       else
-        @pagy, @records = pagy(scoped_locations)
-        @records = LocationBlueprint.render_as_hash(@records)
+        @pagy, @collection = pagy(scoped_locations)
+        @collection = LocationBlueprint.render_as_hash(@collection)
         response = paginated_response
       end
 
