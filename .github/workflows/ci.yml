@@ -10,7 +10,7 @@ env:
   DATABASE_HOST: localhost
   DATABASE_USER: postgres
   DATABASE_PASSWORD: postgres
-  RUBY_VERSION: 3.2.2
+  RUBY_VERSION: 3.1.2
 
 jobs:
   tests:
