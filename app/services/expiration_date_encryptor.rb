@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ExpirationDateEncryptor
   def initialize(payload, secret)
     @payload = payload

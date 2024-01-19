@@ -1,0 +1,84 @@
+name: Continuous Integration
+on:
+  push:
+    branches: [ "main", "development", "staging" ]
+  pull_request:
+    branches: [ "main", "development", "staging" ]
+
+env:
+  DATABASE_NAME: dp_2_0_members_app_test
+  DATABASE_HOST: localhost
+  DATABASE_USER: postgres
+  DATABASE_PASSWORD: postgres
+  RUBY_VERSION: 3.2.2
+
+jobs:
+  tests:
+    name: RSpec tests
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:15
+        ports:
+          - "5432:5432"
+        env:
+          POSTGRES_HOST: ${{ env.DATABASE_HOST }}
+          POSTGRES_USER: ${{ env.DATABASE_USER }}
+          POSTGRES_DB: ${{ env.DATABASE_NAME }}
+          POSTGRES_PASSWORD: ${{ env.DATABASE_PASSWORD }}
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      RAILS_ENV: test
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install Ruby and gems
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+          ruby-version: ${{ env.RUBY_VERSION }}
+
+
+      - name: Set up database schema
+        run: |
+          bundle exec rails db:prepare
+
+
+      - name: Run tests
+        run: |
+          bundle exec rspec ./spec
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install Ruby and gems
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+          ruby-version: ${{ env.RUBY_VERSION }}
+
+      - name: Security audit application code
+        uses: reviewdog/action-brakeman@v2
+        with:
+          brakeman_version: gemfile
+          fail_on_error: true
+
+      - name: Rubocop
+        uses: reviewdog/action-rubocop@v2
+        with:
+          reek_version: gemfile
+          fail_on_error: true
+
+      - name: Reek
+        uses: reviewdog/action-reek@v1
+        with:
+          reek_version: gemfile
+          fail_on_error: true

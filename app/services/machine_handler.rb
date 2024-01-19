@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class MachineHandler
   def initialize(params, user)
     @params = params
@@ -16,7 +18,7 @@ class MachineHandler
   end
 
   private
-  
+
   attr_reader :params, :machine_uuid, :user
 
   def machine

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ImproveTravelSessionTable < ActiveRecord::Migration[5.2]
   def change
     remove_column :travel_sessions, :travel_tool

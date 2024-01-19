@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe DistanceMatrix::Requests::CalculateDistance, type: :service do
   let!(:user) { create(:user) }
   let!(:travel_session) do
     create(:travel_session,
-           user: user,
+           user:,
            start_latitude: '51.729148231285386',
            start_longitude: '19.495436984167636',
            end_latitude: '52.43002147996739',
@@ -13,17 +15,19 @@ RSpec.describe DistanceMatrix::Requests::CalculateDistance, type: :service do
 
   describe '#call' do
     context 'when origins and destinations are correct', vcr: { cassette_name: 'distance_matrix/successful_request' } do
-      let(:request) { described_class.new(travel_session) }
       subject { request.call }
 
+      let(:request) { described_class.new(travel_session) }
+
       it 'returns correct distance' do
-        expect(subject).to eq(95355)
+        expect(subject).to eq(95_355)
       end
     end
 
     context 'when origins and destinations are incorrect', vcr: { cassette_name: 'distance_matrix/failed_request' } do
-      let(:request) { described_class.new(travel_session) }
       subject { request.call }
+
+      let(:request) { described_class.new(travel_session) }
 
       before do
         travel_session.update(start_latitude: '100.323131',
@@ -33,7 +37,7 @@ RSpec.describe DistanceMatrix::Requests::CalculateDistance, type: :service do
       end
 
       it 'returns correct distance' do
-        expect(subject).to eq(nil)
+        expect(subject).to be_nil
       end
     end
   end

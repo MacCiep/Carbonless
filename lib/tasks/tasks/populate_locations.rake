@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 namespace :populate_locations do
-  desc "Seed locations"
+  desc 'Seed locations'
 
   task seeds: :environment do
     ActiveRecord::Base.transaction do
@@ -29,11 +31,11 @@ namespace :populate_locations do
       )
 
       Location.create!(
-        machine: machine,
+        machine:,
         latitude: rand(51.66912222222..51.846845),
         longitude: rand(19.3305765..19.57322788),
-        country: "Poland",
-        city: "Lodz"
+        country: 'Poland',
+        city: 'Lodz'
       )
     end
   end

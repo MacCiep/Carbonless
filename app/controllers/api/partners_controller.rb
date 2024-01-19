@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Api
   class PartnersController < ApiController
     def index
@@ -5,9 +7,9 @@ module Api
         response = PartnerBlueprint.render_as_hash(
           scoped_partners,
           view: :with_locations,
-          latitude: latitude,
-          longitude: longitude,
-          range: range
+          latitude:,
+          longitude:,
+          range:
         )
       else
         @pagy, @collection = pagy(scoped_partners)
@@ -38,7 +40,7 @@ module Api
     end
 
     def range
-      if params[:range] && params[:range]&.to_f > 50
+      if params[:range] && (params[:range]&.to_f&.> 50)
         raise ActionController::BadRequest, 'Range cannot be greater than 50'
       end
 

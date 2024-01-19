@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module TravelSessions
   class OriginSessionHandler
     def initialize(params, user, machine)
@@ -13,10 +15,10 @@ module TravelSessions
 
       return Resonad.Failure('Request is invalid') unless OriginValidator.new(machine, expires).call
 
-      travel_session = user.travel_sessions.build(machine: machine,
+      travel_session = user.travel_sessions.build(machine:,
                                                   active: true,
-                                                  start_latitude: start_latitude,
-                                                  start_longitude: start_longitude)
+                                                  start_latitude:,
+                                                  start_longitude:)
       if travel_session.save
         Resonad.Success(travel_session)
       else

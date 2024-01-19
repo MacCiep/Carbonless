@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 module Api
   class ExchangeItemsController < ApiController
-    before_action :set_exchange_item, only: [:show, :update, :destroy, :activate, :cancel, :inactivate]
+    before_action :set_exchange_item, only: %i[show update destroy activate cancel inactivate]
 
     def index
       @collection = ExchangeItem.status_active.order(created_at: :desc)
@@ -82,7 +84,7 @@ module Api
       @exchange_item = ExchangeItem.find(params[:id])
     end
 
-    #TODO: Refactor it!, think about better solution to connect it with similar method in exchange_offers_controller.rb
+    # TODO: Refactor it!, think about better solution to connect it with similar method in exchange_offers_controller.rb
     def exchange_item_valid?
       if @exchange_item.invalid?
         @error = @exchange_item.errors.full_messages
@@ -96,7 +98,7 @@ module Api
     end
 
     def attributes_filter_params
-      params.permit( :user_id)
+      params.permit(:user_id)
     end
 
     # Only allow a trusted parameter "white list" through.

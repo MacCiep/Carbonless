@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: exchange_offers
@@ -27,11 +29,11 @@ class ExchangeOffer < ApplicationRecord
   belongs_to :user
   belongs_to :exchange_item
 
-  validates :user, :exchange_item, :description, :status, presence: true
+  validates :description, :status, presence: true
   validates :description, length: { maximum: 250 }
   validate :offer_for_own_item?
   validate :offer_already_pending?, on: :create
-  validates_presence_of :response_description, if: -> { status_accepted? || status_rejected? }
+  validates :response_description, presence: { if: -> { status_accepted? || status_rejected? } }
 
   enum status: { pending: 0, rejected: 1, accepted: 2, completed: 3 }, _prefix: :status
 
@@ -55,14 +57,14 @@ class ExchangeOffer < ApplicationRecord
   private
 
   def offer_for_own_item?
-    return unless exchange_item&.user_id == user_id
+    return false unless exchange_item&.user_id == user_id
 
     errors.add(:exchange_item, "can't create offer for your own item")
   end
 
   def offer_already_pending?
-    return unless ExchangeOffer.status_pending.where(user_id:).exists?
+    return false unless ExchangeOffer.status_pending.exists?(user_id:)
 
-    errors.add(:exchange_item, "You already have pending offer for this item")
+    errors.add(:exchange_item, 'You already have pending offer for this item')
   end
 end

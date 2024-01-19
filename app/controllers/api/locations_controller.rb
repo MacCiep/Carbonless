@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Api
   class LocationsController < ApplicationController
     def index
@@ -5,7 +7,8 @@ module Api
         @pagy, @collection = pagy(scoped_locations)
         render json: paginated_response, status: :ok
       else
-        return render json: { errors: { latitude: ["can't be blank"], longitude: ["can't be blank"] } }, status: :bad_request
+        render json: { errors: { latitude: ["can't be blank"], longitude: ["can't be blank"] } },
+               status: :bad_request
       end
     end
 

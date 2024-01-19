@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module AdminAdministrate
   class TravelSessionsController < AdminAdministrate::ApplicationController
     # Overwrite any of the RESTful controller actions to implement custom behavior

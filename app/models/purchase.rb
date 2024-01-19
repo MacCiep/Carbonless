@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: purchases
@@ -19,7 +21,6 @@
 #  fk_rails_...  (user_id => users.id)
 #
 class Purchase < ApplicationRecord
-  validates :machine, :user, presence: true
   belongs_to :user
   belongs_to :machine
   has_one :partner, through: :machine

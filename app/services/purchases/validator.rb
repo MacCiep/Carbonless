@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 module Purchases
   class Validator < MachineValidator
-    #TODO: Return to 12 hours
+    # TODO: Return to 12 hours
     TIME_BETWEEN_PURCHASES = 20.seconds
     EXPIRATION_TIME_LIMIT = 20.minutes
 
@@ -25,7 +27,7 @@ module Purchases
         return false
       end
 
-      expires_date = decrypted_expires.to_datetime.in_time_zone("UTC")
+      expires_date = decrypted_expires.to_datetime.in_time_zone('UTC')
       verification_time < expires_date && expires_date < verification_time + EXPIRATION_TIME_LIMIT
     end
 

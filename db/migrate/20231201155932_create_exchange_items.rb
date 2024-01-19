@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateExchangeItems < ActiveRecord::Migration[7.1]
   def change
     create_table :exchange_items do |t|

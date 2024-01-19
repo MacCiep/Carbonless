@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class UserUpdater
   def initialize(user:, machine:, points: 0, carbon_saved: 0)
     @user = user

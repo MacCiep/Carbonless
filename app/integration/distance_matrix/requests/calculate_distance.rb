@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 module DistanceMatrix
   module Requests
     class CalculateDistance
-
       attr_reader :travel_session
 
       include DistanceMatrix::Helpers::QueryParamsHelper
@@ -13,7 +14,7 @@ module DistanceMatrix
       end
 
       def call
-        response = client.post("#{build_query_params(travel_session)}")
+        response = client.post(build_query_params(travel_session).to_s)
 
         return unless response.status == 200
 
@@ -27,12 +28,12 @@ module DistanceMatrix
       def client
         Faraday.new(
           url: HOST,
-          headers: {'Content-Type' => 'application/json'}
+          headers: { 'Content-Type' => 'application/json' }
         )
       end
 
       def extract(response_body)
-        response_body.dig('rows')&.first&.dig('elements')&.first&.dig('distance', 'value')
+        response_body['rows']&.first&.dig('elements')&.first&.dig('distance', 'value')
       end
     end
   end

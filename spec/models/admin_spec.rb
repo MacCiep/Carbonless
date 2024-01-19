@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: admins
@@ -17,6 +19,6 @@
 #
 require 'rails_helper'
 
-RSpec.describe Admin, type: :model do
+RSpec.describe Admin do
   pending "add some examples to (or delete) #{__FILE__}"
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ExchangeOfferPolicy < ApplicationPolicy
   def destroy?
     is_owner?

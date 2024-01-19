@@ -7,7 +7,7 @@ shared_examples 'response status' do |status|
 end
 
 shared_examples 'protected endpoint' do |method:, url:|
-  subject { send(method, url, headers: headers) }
+  subject { send(method, url, headers:) }
 
   let(:headers) { {} }
   let(:user) { create(:user) }
@@ -19,8 +19,13 @@ shared_examples 'protected endpoint' do |method:, url:|
   end
 
   context 'when authorization header is present' do
+    subject do
+      send(method, url, headers:)
+    rescue StandardError
+      nil
+    end
+
     let(:headers) { authenticated_headers({}, user) }
-    subject { send(method, url, headers: headers) rescue nil } # we don't care about the response - just a status
 
     context 'when access token is valid' do
       before { subject }

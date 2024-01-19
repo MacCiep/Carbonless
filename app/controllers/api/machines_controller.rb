@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Api
   class MachinesController < ApiController
     before_action :set_machine, only: %i[show update destroy]

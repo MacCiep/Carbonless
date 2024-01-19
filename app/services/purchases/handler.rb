@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Purchases
   class Handler
     def initialize(params, user, machine)
@@ -9,9 +11,9 @@ module Purchases
     def call
       return Resonad.Failure('Request is invalid') unless Validator.new(machine, expires, user).call
 
-      purchase = user.purchases.build(machine: machine)
+      purchase = user.purchases.build(machine:)
       if purchase.save
-        UserUpdater.new(user: user, machine: machine).call
+        UserUpdater.new(user:, machine:).call
         Resonad.Success(PurchaseSerializer.new(purchase, user).call)
       else
         Resonad.Failure(purchase.errors.full_messages)

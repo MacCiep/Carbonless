@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ModerationLockable
   extend ActiveSupport::Concern
 
@@ -31,7 +33,7 @@ module ModerationLockable
     end
 
     def attempts_exceeded?
-      self.flagged_messages >= self.class.maximum_attempts
+      flagged_messages >= self.class.maximum_attempts
     end
 
     def increment_flagged_messages
@@ -40,10 +42,10 @@ module ModerationLockable
     end
 
     def reset_flagged_messages!
-      if respond_to?(:flagged_messages) && !flagged_messages.to_i.zero?
-        self.flagged_messages = 0
-        save(validate: false)
-      end
+      return unless respond_to?(:flagged_messages) && !flagged_messages.to_i.zero?
+
+      self.flagged_messages = 0
+      save(validate: false)
     end
 
     def access_locked?

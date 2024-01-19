@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 module Api
   class MachineHandlersController < ApiController
-    before_action :set_travel_session, only: [:update, :destroy]
+    before_action :set_travel_session, only: %i[update destroy]
 
     def create
       result = MachineHandler.new(handler_params, current_user).call

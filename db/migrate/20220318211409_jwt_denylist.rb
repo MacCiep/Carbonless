@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class JwtDenylist < ActiveRecord::Migration[5.2]
   create_table :jwt_denylist do |t|
     t.string :jti, null: false

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class UserBlueprint < Blueprinter::Base
   view :high_score do
     fields :score, :username

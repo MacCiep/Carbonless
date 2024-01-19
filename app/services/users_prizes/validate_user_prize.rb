@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module UsersPrizes
   class ValidateUserPrize
     def initialize(user_prize)

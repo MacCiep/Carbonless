@@ -1,7 +1,10 @@
+# frozen_string_literal: true
+
 module TgtgMicroservice
   module Requests
     class Authorization
       attr_reader :user
+
       ENDPOINT = 'authorize'
 
       def initialize(user)
@@ -28,8 +31,8 @@ module TgtgMicroservice
 
       def client
         Faraday.new(
-          url: ENV['TGTG_MICROSERVICE_URL'],
-          headers: {'Content-Type' => 'application/json'}
+          url: ENV.fetch('TGTG_MICROSERVICE_URL', nil),
+          headers: { 'Content-Type' => 'application/json' }
         )
       end
     end

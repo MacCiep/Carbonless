@@ -1,6 +1,7 @@
+# frozen_string_literal: true
+
 module Api
   class HighScoresController < ApiController
-
     def index
       render json: UserBlueprint.render_as_hash(
         current_user,

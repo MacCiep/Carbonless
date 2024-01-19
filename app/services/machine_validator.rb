@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class MachineValidator
   private
 
@@ -6,6 +8,6 @@ class MachineValidator
   end
 
   def verification_time
-    @verification_time ||= DateTime.now.in_time_zone("UTC")
+    @verification_time ||= DateTime.now.in_time_zone('UTC')
   end
 end

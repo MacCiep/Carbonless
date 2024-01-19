@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module TravelSessions
   class DestinationSessionHandler
     def initialize(params, user, travel_session)
@@ -9,20 +11,22 @@ module TravelSessions
     end
 
     def call
-      return Resonad.Failure('Request is invalid') unless machine && DestinationValidator.new(machine, expires, travel_session).call
+      return Resonad.Failure('Request is invalid') unless machine && DestinationValidator.new(machine, expires,
+                                                                                              travel_session).call
 
       @travel_session.assign_attributes(@travel_destination_params)
       car_distance = DistanceMatrix::Requests::CalculateDistance.new(@travel_session).call
 
       # TODO: Message should be equal to above failure message
-      return Resonad.Failure('Wrong coordinates') unless car_distance.present?
+      return Resonad.Failure('Wrong coordinates') if car_distance.blank?
 
       session_results = TravelSessions::TravelSessionCalculator.new(car_distance).call
 
       ActiveRecord::Base.transaction do
-        if travel_session.update(car_distance: car_distance, success: true, active: false, points: session_results[:points])
-          UserUpdater.new(user: user,
-                          machine: machine,
+        if travel_session.update(car_distance:, success: true, active: false,
+                                 points: session_results[:points])
+          UserUpdater.new(user:,
+                          machine:,
                           points: session_results[:points],
                           carbon_saved: session_results[:carbon_saved]).call
 

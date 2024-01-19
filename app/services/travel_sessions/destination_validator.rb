@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module TravelSessions
   class DestinationValidator < OriginValidator
     def initialize(machine, expires, current_session)

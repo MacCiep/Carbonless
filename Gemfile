@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
@@ -27,58 +29,63 @@ gem 'aasm'
 gem 'devise'
 gem 'devise-jwt'
 
-gem 'redis'
-gem "ruby-openai"
-gem 'sidekiq'
 gem 'faraday'
+gem 'redis'
+gem 'ruby-openai'
+gem 'sidekiq'
 
 gem 'kaminari'
 # Reduces boot times through caching; required in config/boot.rb
-gem 'bootsnap', '>= 1.1.0', require: false
 gem 'blueprinter'
+gem 'bootsnap', '>= 1.1.0', require: false
 gem 'pagy'
 
 gem 'rubocop', require: false
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 # gem 'rack-cors'
 
-gem 'resonad'
-gem 'jbuilder'
 gem 'fcm'
+gem 'jbuilder'
 gem 'pundit'
+gem 'resonad'
 gem 'scenic'
 
-gem "administrate"
+gem 'administrate'
 gem 'administrate-field-active_storage'
-gem "image_processing"
+gem 'image_processing'
 
-gem "sentry-ruby"
-gem "sentry-rails"
-gem "aws-sdk-s3", require: false
+gem 'aws-sdk-s3', require: false
+gem 'sentry-rails'
+gem 'sentry-ruby'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
   gem 'dotenv-rails'
-  gem 'rspec-rails'
-  gem "factory_bot_rails", "~> 6.2"
+  gem 'factory_bot_rails', '~> 6.2'
   gem 'faker'
+  gem 'rspec-rails'
 end
 
 group :test do
   gem 'database_cleaner-active_record'
   gem 'shoulda-matchers'
-  gem 'vcr'
-  gem "webmock", require: false
   gem 'timecop'
+  gem 'vcr'
+  gem 'webmock', require: false
 end
 
 group :development do
-  gem 'erd'
   gem 'listen', '>= 3.0.5', '< 3.2'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
+  gem 'annotate'
+  gem 'brakeman'
+  gem 'reek'
+  gem 'rubocop', require: false
+  gem 'rubocop-performance', require: false
+  gem 'rubocop-rails', require: false
+  gem 'rubocop-rspec', require: false
   gem 'spring'
-  gem "annotate"
   gem 'spring-watcher-listen', '~> 2.0.0'
 end
 
