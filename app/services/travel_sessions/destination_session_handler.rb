@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module TravelSessions
+  # :reek:TooManyInstanceVariables
   class DestinationSessionHandler
     def initialize(params, user, travel_session)
       @expires = params[:expires]
@@ -23,11 +24,12 @@ module TravelSessions
       session_results = TravelSessions::TravelSessionCalculator.new(car_distance).call
 
       ActiveRecord::Base.transaction do
+        session_points = session_results[:points]
         if travel_session.update(car_distance:, success: true, active: false,
-                                 points: session_results[:points])
+                                 points: session_points)
           UserUpdater.new(user:,
                           machine:,
-                          points: session_results[:points],
+                          points: session_points,
                           carbon_saved: session_results[:carbon_saved]).call
 
           Resonad.Success(DestinationTravelSessionSerializer.new(session_results, user).call)

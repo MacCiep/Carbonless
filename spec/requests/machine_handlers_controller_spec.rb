@@ -188,12 +188,14 @@ RSpec.describe Api::MachineHandlersController do
       context 'when location params are invalid', vcr: { cassette_name: 'distance_matrix/failed_request' } do
         let(:expected_response) { { 'message' => 'Wrong coordinates' }.to_json }
 
+        # rubocop:disable Rails/SkipsModelValidations:
         before do
           params[:handler][:end_latitude] = '1.1241'
           params[:handler][:end_longitude] = '400.31311'
           travel_session.update_columns(start_latitude: '100.323131', start_longitude: '250.31124')
           subject
         end
+        # rubocop:enable Rails/SkipsModelValidations:
 
         it 'returns error' do
           expect(response).to(have_http_status(:unprocessable_entity))

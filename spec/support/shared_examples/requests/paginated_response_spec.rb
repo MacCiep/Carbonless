@@ -3,7 +3,6 @@
 require 'spec_helper'
 
 shared_examples_for 'Paginated response' do
-  # rubocop:disable RSpec/ExampleLength, RSpec/MultipleExpectations
   it 'contains all paginated information' do
     json_response = JSON.parse(response.body)
     expect(json_response['records'].size).not_to be_nil

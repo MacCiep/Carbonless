@@ -40,11 +40,10 @@ module Api
     end
 
     def range
-      if params[:range] && (params[:range]&.to_f&.> 50)
-        raise ActionController::BadRequest, 'Range cannot be greater than 50'
-      end
+      provided_range = params[:range]&.to_f
+      raise ActionController::BadRequest, 'Range cannot be greater than 50' if provided_range && (provided_range > 50)
 
-      params[:range]&.to_f || 10
+      provided_range || 10
     end
   end
 end

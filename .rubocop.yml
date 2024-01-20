@@ -19,10 +19,19 @@ AllCops:
     - "spec/rails_helper.rb"
     - "vendor/**/*"
     - "Rakefile"
+    - "lib/tasks/**/*"
 
   TargetRubyVersion: 3.2.2
 
 Style/Documentation:
   Enabled: false
 RSpec/NestedGroups:
+  Enabled: false
+RSpec:
+  Enabled: false
+Metrics/MethodLength:
+  Max: 20
+Rails/HasManyOrHasOneDependent:
+  Enabled: false
+Metrics/AbcSize:
   Enabled: false

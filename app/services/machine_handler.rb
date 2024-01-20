@@ -8,7 +8,7 @@ class MachineHandler
   end
 
   def call
-    return Resonad.Failure('Request is invalid') if machine.nil?
+    return Resonad.Failure('Request is invalid') if machine.blank?
 
     if machine.service_type == 'travel'
       TravelSessions::OriginSessionHandler.new(params, user, machine).call

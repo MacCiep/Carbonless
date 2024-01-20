@@ -41,8 +41,9 @@ RSpec.describe Api::ExchangeOffersController do
         it_behaves_like 'Paginated response'
 
         it 'returns only exchange offers for exchange items created by user' do
-          expect(response.parsed_body['records'][0].to_json).to eq(ExchangeOfferBlueprint.render_as_hash(exchange_offer).to_json)
-          expect(response.parsed_body['records'].count).to eq(1)
+          records = response.parsed_body['records']
+          expect(records[0].to_json).to eq(ExchangeOfferBlueprint.render_as_hash(exchange_offer).to_json)
+          expect(records.count).to eq(1)
         end
       end
 
@@ -59,8 +60,9 @@ RSpec.describe Api::ExchangeOffersController do
         it_behaves_like 'Paginated response'
 
         it 'returns only exchange offers created by user' do
-          expect(response.parsed_body['records'][0].to_json).to eq(ExchangeOfferBlueprint.render_as_hash(my_exchange_offer).to_json)
-          expect(response.parsed_body['records'].count).to eq(1)
+          records = response.parsed_body['records']
+          expect(records[0].to_json).to eq(ExchangeOfferBlueprint.render_as_hash(my_exchange_offer).to_json)
+          expect(records.count).to eq(1)
         end
       end
 
@@ -75,8 +77,9 @@ RSpec.describe Api::ExchangeOffersController do
         it_behaves_like 'Paginated response'
 
         it 'returns only exchange offers with provided status' do
-          expect(response.parsed_body['records'][0].to_json).to eq(ExchangeOfferBlueprint.render_as_hash(exchange_offer).to_json)
-          expect(response.parsed_body['records'].count).to eq(1)
+          records = response.parsed_body['records']
+          expect(records[0].to_json).to eq(ExchangeOfferBlueprint.render_as_hash(exchange_offer).to_json)
+          expect(records.count).to eq(1)
         end
       end
     end
@@ -145,7 +148,9 @@ RSpec.describe Api::ExchangeOffersController do
         let(:params) { { exchange_offer: { exchange_item_id: exchange_item.id, description: 'Really bad word' } } }
         let(:expected_response) do
           {
-            'errors' => ['Please do not use bad words in description, if this happens again your account will be blocked']
+            'errors' => [
+              'Please do not use bad words in description, if this happens again your account will be blocked'
+            ]
           }
         end
 
@@ -238,7 +243,9 @@ RSpec.describe Api::ExchangeOffersController do
         let!(:exchange_offer) { create(:exchange_offer, exchange_item:) }
         let(:expected_response) do
           {
-            'errors' => ['Please do not use bad words in description, if this happens again your account will be blocked']
+            'errors' => [
+              'Please do not use bad words in description, if this happens again your account will be blocked'
+            ]
           }
         end
 
@@ -308,7 +315,8 @@ RSpec.describe Api::ExchangeOffersController do
         let!(:exchange_offer) { create(:exchange_offer, exchange_item:) }
         let(:expected_response) do
           {
-            'errors' => ['Please do not use bad words in description, if this happens again your account will be blocked']
+            'errors' =>
+              ['Please do not use bad words in description, if this happens again your account will be blocked']
           }
         end
 

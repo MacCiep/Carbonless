@@ -18,7 +18,7 @@ module Api
 
     def create
       new_prize = current_user.users_prizes.new(user_prize_params_create)
-      return head :unprocessable_entity unless user_have_enough_points?
+      return head :bad_request unless user_have_enough_points?
 
       current_user.points -= @prize.price
       ActiveRecord::Base.transaction do

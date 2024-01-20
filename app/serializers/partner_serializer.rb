@@ -18,6 +18,7 @@ class PartnerSerializer
     @longitude = longitude
   end
 
+  # :reek:NestedIterators
   def call
     Jbuilder.new do |json|
       @partners.each do |_partner|

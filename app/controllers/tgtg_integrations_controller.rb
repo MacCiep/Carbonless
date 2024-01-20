@@ -4,8 +4,9 @@ class TgtgIntegrationsController < ApplicationController
   def show
     result = TgtgMicroservice::Requests::AddOrderPoints.new(current_user).call
     if result.present?
-      current_user.update(points: current_user.points + result)
-      render json: { points: current_user.points, added_points: result }, status: :ok
+      users_points = current_user.points + result
+      current_user.update(points: users_points)
+      render json: { points: users_points, added_points: result }, status: :ok
     else
       render json: { message: 'Something went wrong, please try another time' }, status: :unprocessable_entity
     end

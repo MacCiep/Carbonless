@@ -90,7 +90,9 @@ RSpec.describe Api::ExchangeItemsController do
         let(:params) { { exchange_item: { name: Faker::Books.name, description: 'Really bad word' } } }
         let(:expected_response) do
           {
-            'errors' => ['Please do not use bad words in description, if this happens again your account will be blocked']
+            'errors' => [
+              'Please do not use bad words in description, if this happens again your account will be blocked'
+            ]
           }
         end
 

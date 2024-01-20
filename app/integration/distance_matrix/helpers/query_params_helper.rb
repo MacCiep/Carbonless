@@ -14,6 +14,7 @@ module DistanceMatrix
         destinations: %w[end_latitude end_longitude]
       }.freeze
 
+      # :reek:UtilityFunction
       def build_query_params(travel_session)
         query_params = '?'
 
@@ -26,6 +27,14 @@ module DistanceMatrix
         end
 
         query_params
+      end
+
+      private
+
+      def prepare_static_params
+        STATIC_PARAMS.each do |key, value|
+          query_params + "#{key}=#{value}&"
+        end
       end
     end
   end

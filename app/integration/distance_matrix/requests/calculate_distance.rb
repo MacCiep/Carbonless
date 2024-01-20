@@ -25,6 +25,7 @@ module DistanceMatrix
 
       private
 
+      # :reek:UtilityFunction
       def client
         Faraday.new(
           url: HOST,
@@ -32,6 +33,7 @@ module DistanceMatrix
         )
       end
 
+      # :reek:UtilityFunction
       def extract(response_body)
         response_body['rows']&.first&.dig('elements')&.first&.dig('distance', 'value')
       end

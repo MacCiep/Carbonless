@@ -51,7 +51,7 @@ RSpec.describe Api::UsersPrizesController do
         it 'returns error' do
           subject
           expect(UsersPrize.count).to eq(0)
-          expect(response).to(have_http_status(:unprocessable_entity))
+          expect(response).to(have_http_status(:bad_request))
         end
       end
     end

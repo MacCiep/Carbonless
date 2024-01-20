@@ -2,28 +2,28 @@
 
 class ExchangeOfferPolicy < ApplicationPolicy
   def destroy?
-    is_owner?
+    owner?
   end
 
   def accept?
-    is_item_owner?
+    item_owner?
   end
 
   def reject?
-    is_item_owner?
+    item_owner?
   end
 
   def complete?
-    is_owner?
+    owner?
   end
 
   private
 
-  def is_item_owner?
+  def item_owner?
     @record.exchange_item.user_id == user.id
   end
 
-  def is_owner?
+  def owner?
     @record.user_id == user.id
   end
 end

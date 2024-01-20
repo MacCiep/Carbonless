@@ -12,9 +12,9 @@ class MachineDashboard < Administrate::BaseDashboard
   ATTRIBUTE_TYPES = {
     id: Field::Number,
     secret: Field::String,
-    service_type: Field::Select.with_options(searchable: false, collection: lambda { |field|
-                                                                              field.resource.class.send(field.attribute.to_s.pluralize).keys
-                                                                            }),
+    service_type: Field::Select.with_options(
+      searchable: false, collection: ->(field) { field.resource.class.send(field.attribute.to_s.pluralize).keys }
+    ),
     partner: Field::BelongsTo,
     uuid: Field::String
   }.freeze

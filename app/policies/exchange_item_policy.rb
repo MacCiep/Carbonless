@@ -2,32 +2,32 @@
 
 class ExchangeItemPolicy < ApplicationPolicy
   def destroy?
-    is_owner?
+    owner?
   end
 
   def update?
-    is_owner?
+    owner?
   end
 
   def activate?
-    is_owner?
+    owner?
   end
 
   def cancel?
-    is_owner?
+    owner?
   end
 
   def exchange?
-    is_owner?
+    owner?
   end
 
   def inactivate?
-    is_owner?
+    owner?
   end
 
   private
 
-  def is_owner?
+  def owner?
     @record.user_id == user.id
   end
 end

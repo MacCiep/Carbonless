@@ -30,11 +30,12 @@ module Partners
     end
 
     def range
-      if params[:range] && (params[:range]&.to_f&.> 50)
+      range_value = params[:range]&.to_f
+      if range_value.present? && (range_value > 50)
         raise ActionController::BadRequest, 'Range cannot be greater than 50'
       end
 
-      params[:range]&.to_f || 10
+      range_value || 10
     end
   end
 end

@@ -7,6 +7,7 @@ module Purchases
     EXPIRATION_TIME_LIMIT = 20.minutes
 
     def initialize(machine, expires, user)
+      super()
       @machine = machine
       @expires = expires
       @user = user
@@ -32,9 +33,10 @@ module Purchases
     end
 
     def validate_purchase_offset
-      return true if @user.purchases.count.zero?
+      user_purchases = @user.purchases
+      return true if user_purchases.count.zero?
 
-      @user.purchases.last.created_at + TIME_BETWEEN_PURCHASES < verification_time
+      user_purchases.last.created_at + TIME_BETWEEN_PURCHASES < verification_time
     end
   end
 end

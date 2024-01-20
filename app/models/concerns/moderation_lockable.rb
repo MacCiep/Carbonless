@@ -3,6 +3,7 @@
 module ModerationLockable
   extend ActiveSupport::Concern
 
+  # rubocop:disable Metrics/BlockLength
   included do
     include Devise::Models::Lockable
 
@@ -19,27 +20,28 @@ module ModerationLockable
     def valid_for_authentication?
       return super unless persisted? && lock_strategy_enabled?(:flagged_messages)
 
-      if super && !access_locked?
-        true
+      return true if super && !access_locked?
+
+      increment_flagged_messages
+      if attempts_exceeded?
+        lock_access! unless access_locked?
       else
-        increment_flagged_messages
-        if attempts_exceeded?
-          lock_access! unless access_locked?
-        else
-          save(validate: false)
-        end
-        false
+        save(validate: false)
       end
+
+      false
     end
 
     def attempts_exceeded?
       flagged_messages >= self.class.maximum_attempts
     end
 
+    # rubocop:disable Rails/SkipsModelValidations
     def increment_flagged_messages
       self.class.increment_counter(:flagged_messages, id)
       reload
     end
+    # rubocop:enable Rails/SkipsModelValidations
 
     def reset_flagged_messages!
       return unless respond_to?(:flagged_messages) && !flagged_messages.to_i.zero?
@@ -52,4 +54,5 @@ module ModerationLockable
       !!locked_at && !lock_expired?
     end
   end
+  # rubocop:enable Metrics/BlockLength
 end

@@ -3,6 +3,7 @@
 module TravelSessions
   class OriginValidator < MachineValidator
     def initialize(machine, expires)
+      super()
       @machine = machine
       @expires = expires
     end
