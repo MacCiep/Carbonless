@@ -6,7 +6,7 @@ on:
     branches: [ "main", "development", "staging" ]
 
 env:
-  DATABASE_NAME: dp_2_0_members_app_test
+  DATABASE_NAME: carbonless_test
   DATABASE_HOST: localhost
   DATABASE_USER: postgres
   DATABASE_PASSWORD: postgres
