@@ -81,4 +81,11 @@ RSpec.configure do |config|
   config.filter_rails_from_backtrace!
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
+
+  Devise.setup do |config|
+    config.jwt do |jwt|
+      jwt.secret = 'secret'
+      jwt.expiration_time = ENV['DEVISE_JWT_EXPIRATION_TIME'].to_i
+    end
+  end
 end
