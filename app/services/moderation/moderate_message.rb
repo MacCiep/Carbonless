@@ -8,7 +8,7 @@ module Moderation
     end
 
     def call
-      return true if ENV.fetch('OPENAI_ENABLED', nil)
+      return true unless ENV.fetch('OPENAI_ENABLED', nil)
 
       client = OpenAI::Client.new
       @response = client.moderations(parameters: { input: message })

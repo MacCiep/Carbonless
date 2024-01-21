@@ -85,7 +85,8 @@ RSpec.configure do |config|
   Devise.setup do |config|
     config.jwt do |jwt|
       jwt.secret = 'secret'
-      jwt.expiration_time = ENV['DEVISE_JWT_EXPIRATION_TIME'].to_i
     end
   end
+
+  ENV['OPENAI_ENABLED'] = 'true'
 end
