@@ -88,5 +88,9 @@ RSpec.configure do |config|
     end
   end
 
+  OpenAI.configure do |config|
+    config.access_token = 'fake token'
+  end
+
   ENV['OPENAI_ENABLED'] = 'true'
 end
