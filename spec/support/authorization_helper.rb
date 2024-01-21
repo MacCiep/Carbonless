@@ -3,6 +3,7 @@
 require 'devise/jwt/test_helpers'
 
 module ApiHelper
+  # :reek:UtilityFunction
   def authenticated_headers(headers, user)
     Devise::JWT::TestHelpers.auth_headers(headers, user, scope: :user)
   end

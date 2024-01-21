@@ -1,11 +1,14 @@
+# frozen_string_literal: true
+
 module Api
   class MachineHandlersController < ApiController
-    before_action :set_travel_session, only: [:update, :destroy]
+    before_action :set_travel_session, only: %i[update destroy]
 
     def create
       result = MachineHandler.new(handler_params, current_user).call
       if result.success?
-        render json: result.value, status: success_status(result.value)
+        result_value = result.value
+        render json: result_value, status: success_status(result_value)
       else
         render json: { message: result.error }, status: :unprocessable_entity
       end
@@ -14,7 +17,8 @@ module Api
     def update
       result = TravelSessions::DestinationSessionHandler.new(handler_params, current_user, travel_session).call
       if result.success?
-        render json: result.value, status: success_status(result.value)
+        result_value = result.value
+        render json: result_value, status: success_status(result_value)
       else
         render json: { message: result.error }, status: :unprocessable_entity
       end

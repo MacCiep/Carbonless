@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: admins
@@ -16,7 +18,8 @@
 #  index_admins_on_reset_password_token  (reset_password_token) UNIQUE
 #
 FactoryBot.define do
+  # rubocop:disable Lint/EmptyBlock
   factory :admin do
-    
   end
+  # rubocop:enable Lint/EmptyBlock
 end

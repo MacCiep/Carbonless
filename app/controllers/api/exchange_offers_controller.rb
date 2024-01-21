@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 module Api
   class ExchangeOffersController < ApiController
-    before_action :set_exchange_offer, only: [:show, :destroy, :accept, :reject, :complete]
+    before_action :set_exchange_offer, only: %i[show destroy accept reject complete]
     before_action :set_collection, only: [:index]
 
     def index
@@ -70,7 +72,7 @@ module Api
 
     private
 
-    #TODO: Refactor it!, think about better solution to connect it with similar method in exchange_items_controller.rb
+    # TODO: Refactor it!, think about better solution to connect it with similar method in exchange_items_controller.rb
     def exchange_offer_valid?(moderation_field)
       if @exchange_offer.invalid?
         @error = @exchange_offer.errors.full_messages

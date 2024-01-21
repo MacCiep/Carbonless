@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: exchange_items
@@ -45,7 +47,7 @@ class ExchangeItem < ApplicationRecord
     end
 
     event :cancel do
-      transitions from: [:inactive, :active], to: :cancelled
+      transitions from: %i[inactive active], to: :cancelled
     end
   end
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: exchange_offers
@@ -23,23 +25,23 @@
 #
 require 'rails_helper'
 
-RSpec.describe ExchangeOffer, type: :model do
+RSpec.describe ExchangeOffer do
   describe 'associations' do
-    it { should belong_to(:user) }
-    it { should belong_to(:exchange_item) }
+    it { is_expected.to belong_to(:user) }
+    it { is_expected.to belong_to(:exchange_item) }
   end
 
   describe 'validations' do
-    it { should validate_presence_of(:user) }
-    it { should validate_presence_of(:exchange_item) }
-    it { should validate_presence_of(:description) }
-    it { should validate_presence_of(:status) }
-    it { should validate_length_of(:description).is_at_most(250) }
+    it { is_expected.to belong_to(:user) }
+    it { is_expected.to belong_to(:exchange_item) }
+    it { is_expected.to validate_presence_of(:description) }
+    it { is_expected.to validate_presence_of(:status) }
+    it { is_expected.to validate_length_of(:description).is_at_most(250) }
 
-    context '#offer_for_own_item?' do
+    describe '#offer_for_own_item?' do
       let(:user) { create(:user) }
       let(:exchange_item) { create(:exchange_item, user:) }
-      let(:exchange_offer) { build(:exchange_offer, user: user, exchange_item: exchange_item) }
+      let(:exchange_offer) { build(:exchange_offer, user:, exchange_item:) }
 
       it 'adds error when user is trying to offer his own item' do
         exchange_offer.valid?
@@ -47,22 +49,22 @@ RSpec.describe ExchangeOffer, type: :model do
       end
     end
 
-    context '#offer_already_pending?' do
+    describe '#offer_already_pending?' do
       let(:user) { create(:user) }
       let(:exchange_item) { create(:exchange_item) }
-      let(:new_exchange_offer) { build(:exchange_offer, user: user, exchange_item: exchange_item) }
+      let(:new_exchange_offer) { build(:exchange_offer, user:, exchange_item:) }
 
       before do
-        create(:exchange_offer, user: user, exchange_item: exchange_item)
+        create(:exchange_offer, user:, exchange_item:)
       end
 
       it 'adds error when user\'s pending exchange offer for that item already exists' do
         new_exchange_offer.valid?
-        expect(new_exchange_offer.errors[:exchange_item]).to include("You already have pending offer for this item")
+        expect(new_exchange_offer.errors[:exchange_item]).to include('You already have pending offer for this item')
       end
     end
 
-    context '#response_with_description?' do
+    describe '#response_with_description?' do
       let(:exchange_offer) { create(:exchange_offer, response_description: nil) }
 
       it 'adds error when exchange item is rejected without response description' do
@@ -78,7 +80,10 @@ RSpec.describe ExchangeOffer, type: :model do
   end
 
   describe 'enums' do
-    it { should define_enum_for(:status).with_values(pending: 0, rejected: 1, accepted: 2, completed: 3).with_prefix(:status) }
+    it {
+      expect(subject).to define_enum_for(:status).with_values(pending: 0, rejected: 1, accepted: 2,
+                                                              completed: 3).with_prefix(:status)
+    }
   end
 
   describe 'aasm' do
@@ -127,7 +132,7 @@ RSpec.describe ExchangeOffer, type: :model do
 
     context 'when event complete is called' do
       let(:exchange_item) { create(:exchange_item, status: 'active') }
-      let(:exchange_offer) { create(:exchange_offer, exchange_item: exchange_item, status: 'accepted') }
+      let(:exchange_offer) { create(:exchange_offer, exchange_item:, status: 'accepted') }
 
       it 'changes exchange item status to exchanged' do
         expect { exchange_offer.complete! }.to change { exchange_item.reload.status }.from('active').to('exchanged')

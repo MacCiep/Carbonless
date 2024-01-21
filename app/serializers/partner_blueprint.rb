@@ -1,5 +1,6 @@
-class PartnerBlueprint < Blueprinter::Base
+# frozen_string_literal: true
 
+class PartnerBlueprint < Blueprinter::Base
   fields :name, :description
 
   field :logo do |partner|
@@ -8,10 +9,13 @@ class PartnerBlueprint < Blueprinter::Base
 
   view :with_locations do
     association :locations, blueprint: LocationBlueprint do |partner, options|
-      partner.locations.with_nearby_machines(
-        options[:latitude],
-        options[:longitude],
-        options[:range]) if options[:latitude] && options[:longitude]
+      if options[:latitude] && options[:longitude]
+        partner.locations.with_nearby_machines(
+          options[:latitude],
+          options[:longitude],
+          options[:range]
+        )
+      end
     end
   end
 end

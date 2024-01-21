@@ -1,10 +1,13 @@
+# frozen_string_literal: true
+
 module Purchases
   class Validator < MachineValidator
-    #TODO: Return to 12 hours
+    # TODO: Return to 12 hours
     TIME_BETWEEN_PURCHASES = 20.seconds
     EXPIRATION_TIME_LIMIT = 20.minutes
 
     def initialize(machine, expires, user)
+      super()
       @machine = machine
       @expires = expires
       @user = user
@@ -25,14 +28,15 @@ module Purchases
         return false
       end
 
-      expires_date = decrypted_expires.to_datetime.in_time_zone("UTC")
+      expires_date = decrypted_expires.to_datetime.in_time_zone('UTC')
       verification_time < expires_date && expires_date < verification_time + EXPIRATION_TIME_LIMIT
     end
 
     def validate_purchase_offset
-      return true if @user.purchases.count.zero?
+      user_purchases = @user.purchases
+      return true if user_purchases.count.zero?
 
-      @user.purchases.last.created_at + TIME_BETWEEN_PURCHASES < verification_time
+      user_purchases.last.created_at + TIME_BETWEEN_PURCHASES < verification_time
     end
   end
 end

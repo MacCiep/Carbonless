@@ -1,6 +1,9 @@
+# frozen_string_literal: true
+
 module TravelSessions
   class DestinationValidator < OriginValidator
     def initialize(machine, expires, current_session)
+      super(machine, expires)
       @machine = machine
       @expires = expires
       @current_session = current_session
@@ -17,7 +20,7 @@ module TravelSessions
     SESSION_MAX_LIFETIME = 90.minutes
 
     def verify_current_session
-      return false if current_session.nil?
+      return false if current_session.blank?
       return false if verification_time > current_session.created_at + SESSION_MAX_LIFETIME
 
       current_session.machine.uuid == machine.uuid

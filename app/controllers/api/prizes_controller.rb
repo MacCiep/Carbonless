@@ -1,10 +1,16 @@
+# frozen_string_literal: true
+
 module Api
   class PrizesController < ApiController
     before_action :set_prize, only: %i[update show destroy]
 
     def index
-      @pagy, @collection = pagy(Prize.all.order("id ASC").except(:uuid))
+      @pagy, @collection = pagy(Prize.order('id ASC').except(:uuid))
       render json: paginated_response, status: :ok
+    end
+
+    def show
+      render json: @prize, status: :ok
     end
 
     def create
@@ -15,10 +21,6 @@ module Api
         @error = @prize.errors.full_messages
         render json: error, status: :unprocessable_entity
       end
-    end
-
-    def show
-      render json: @prize, status: :ok
     end
 
     def update

@@ -1,4 +1,6 @@
-require "administrate/base_dashboard"
+# frozen_string_literal: true
+
+require 'administrate/base_dashboard'
 
 class LocationDashboard < Administrate::BaseDashboard
   # ATTRIBUTE_TYPES
@@ -11,7 +13,7 @@ class LocationDashboard < Administrate::BaseDashboard
     id: Field::Number,
     latitude: Field::String.with_options(searchable: false),
     longitude: Field::String.with_options(searchable: false),
-    machine: Field::BelongsTo,
+    machine: Field::BelongsTo
   }.freeze
 
   # COLLECTION_ATTRIBUTES

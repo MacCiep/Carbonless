@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class DestinationTravelSessionSerializer
   attr_reader :session_results, :user
 

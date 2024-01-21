@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: partners
@@ -16,15 +18,16 @@ class PartnerSerializer
     @longitude = longitude
   end
 
+  # :reek:NestedIterators
   def call
     Jbuilder.new do |json|
-      @partners.each do |partner|
+      @partners.each do |_partner|
         json.name
-        if latitude && longitude
-          json.locations locations do |location|
-            json.latitude location.latitude
-            json.longitude location.longitude
-          end
+        next unless latitude && longitude
+
+        json.locations locations do |location|
+          json.latitude location.latitude
+          json.longitude location.longitude
         end
       end
     end

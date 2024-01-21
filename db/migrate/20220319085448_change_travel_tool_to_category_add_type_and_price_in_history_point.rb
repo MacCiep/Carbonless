@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ChangeTravelToolToCategoryAddTypeAndPriceInHistoryPoint < ActiveRecord::Migration[5.2]
   def change
     rename_column :history_points, :travel_tool, :category

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Moderation
   class ModerateMessage
     def initialize(user, message)
@@ -6,6 +8,8 @@ module Moderation
     end
 
     def call
+      return true unless ENV.fetch('OPENAI_ENABLED', nil)
+
       client = OpenAI::Client.new
       @response = client.moderations(parameters: { input: message })
       mark_flagged_message unless valid?
@@ -21,7 +25,9 @@ module Moderation
     end
 
     def valid?
-      @valid ||= response.dig('results')[0]['category_scores'].values.none? { |score| score > ENV.fetch('MODERATION_RESTRICTION', 0.1).to_f }
+      @valid ||= response['results'][0]['category_scores'].values.none? do |score|
+        score > ENV.fetch('MODERATION_RESTRICTION', 0.1).to_f
+      end
     end
   end
 end

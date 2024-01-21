@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddTgtgFieldsToUser < ActiveRecord::Migration[5.2]
   def change
     add_column :users, :tgtg_active, :boolean, default: false, null: false

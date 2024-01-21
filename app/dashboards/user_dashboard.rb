@@ -1,4 +1,6 @@
-require "administrate/base_dashboard"
+# frozen_string_literal: true
+
+require 'administrate/base_dashboard'
 
 class UserDashboard < Administrate::BaseDashboard
   # ATTRIBUTE_TYPES
@@ -12,7 +14,9 @@ class UserDashboard < Administrate::BaseDashboard
     email: Field::String,
     encrypted_password: Field::String,
     history_points: Field::HasMany,
-    language: Field::Select.with_options(searchable: false, collection: ->(field) { field.resource.class.send(field.attribute.to_s.pluralize).keys }),
+    language: Field::Select.with_options(
+      searchable: false, collection: ->(field) { field.resource.class.send(field.attribute.to_s.pluralize).keys }
+    ),
     username: Field::String,
     points: Field::Number,
     # prizes: Field::HasMany,
@@ -22,13 +26,17 @@ class UserDashboard < Administrate::BaseDashboard
     reset_password_token: Field::String,
     tgtg_active: Field::Boolean,
     tgtg_id: Field::Number,
-    theme: Field::Select.with_options(searchable: false, collection: ->(field) { field.resource.class.send(field.attribute.to_s.pluralize).keys }),
+    theme: Field::Select.with_options(
+      searchable: false, collection: ->(field) { field.resource.class.send(field.attribute.to_s.pluralize).keys }
+    ),
     total_carbon_saved: Field::String.with_options(searchable: false),
     travel_sessions: Field::HasMany,
-    user_type: Field::Select.with_options(searchable: false, collection: ->(field) { field.resource.class.send(field.attribute.to_s.pluralize).keys }),
+    user_type: Field::Select.with_options(
+      searchable: false, collection: ->(field) { field.resource.class.send(field.attribute.to_s.pluralize).keys }
+    ),
     users_prizes: Field::HasMany,
     created_at: Field::DateTime,
-    updated_at: Field::DateTime,
+    updated_at: Field::DateTime
   }.freeze
 
   # COLLECTION_ATTRIBUTES

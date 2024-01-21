@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: locations
@@ -22,17 +24,15 @@ class Location < ApplicationRecord
   belongs_to :machine
   has_one :partner, through: :machine
 
-  validates_presence_of :machine, :latitude, :longitude
+  validates :latitude, :longitude, presence: true
   # validates :latitude, format: { with: /\A[+-]?((9[0]?|[0-8][0-9]?([.,][0-9]+)?))\z/ }
   # validates :longitude, format: { with: /\A[+-]?((9[0]?|[0-8][0-9]?([.,][0-9]+)?))\z/ }
 
-  scope :with_nearby_machines, -> (latitude, longitude, range=10) {
-    radius = KM_TO_DEGREES * range;
+  scope :with_nearby_machines, lambda { |latitude, longitude, range = 10|
+    radius = KM_TO_DEGREES * range
     where("latitude >= #{latitude - radius} AND latitude <= #{latitude + radius}
             AND longitude >= #{longitude - radius} AND longitude <= #{longitude + radius}")
   }
-
-  private
 
   KM_TO_DEGREES = 0.00901
 end

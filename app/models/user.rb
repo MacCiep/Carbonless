@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: users
@@ -50,15 +52,15 @@ class User < ApplicationRecord
   # has_many :achievements, through: :users_achievements
 
   def global_rank
-    User.where("score > ?", score).count + 1
+    User.where('score > ?', score).count + 1
   end
 
   def country_rank(country)
-    User.where(country: country).where("score > ?", score).count + 1
+    User.where(country:).where('score > ?', score).count + 1
   end
 
   def city_rank(city)
-    User.where(city: city).where("score > ?", score).count + 1
+    User.where(city:).where('score > ?', score).count + 1
   end
 
   enum theme: {

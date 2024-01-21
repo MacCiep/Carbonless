@@ -1,17 +1,20 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-RSpec.describe Api::ExchangeOffersController, type: :request do
+RSpec.describe Api::ExchangeOffersController do
   let(:user) { create(:user) }
 
   describe 'GET #index' do
     it_behaves_like 'protected endpoint', method: :get, url: '/api/exchange_offers.json'
 
     context 'when user is logged in' do
-      subject { get api_exchange_offers_path, params:, headers: }
+      subject(:request) { get api_exchange_offers_path, params:, headers: }
+
       let(:headers) { authenticated_headers({}, user) }
 
       context 'when scope is NOT provided' do
-        before { subject }
+        before { request }
 
         let(:params) { {} }
 
@@ -19,7 +22,7 @@ RSpec.describe Api::ExchangeOffersController, type: :request do
       end
 
       context 'when scope is NOT valid' do
-        before { subject }
+        before { request }
 
         let(:params) { { scope: 'test' } }
 
@@ -33,13 +36,14 @@ RSpec.describe Api::ExchangeOffersController, type: :request do
         let!(:exchange_offer) { create(:exchange_offer, exchange_item:) }
         let!(:my_exchange_offer) { create(:exchange_offer, user:) }
 
-        before { subject }
+        before { request }
 
-        it_behaves_like "Paginated response"
+        it_behaves_like 'Paginated response'
 
         it 'returns only exchange offers for exchange items created by user' do
-          expect(JSON.parse(response.body)['records'][0].to_json).to eq(ExchangeOfferBlueprint.render_as_hash(exchange_offer).to_json)
-          expect(JSON.parse(response.body)['records'].count).to eq(1)
+          records = response.parsed_body['records']
+          expect(records[0].to_json).to eq(ExchangeOfferBlueprint.render_as_hash(exchange_offer).to_json)
+          expect(records.count).to eq(1)
         end
       end
 
@@ -51,13 +55,14 @@ RSpec.describe Api::ExchangeOffersController, type: :request do
         let(:my_exchange_item) { create(:exchange_item, user:) }
         let!(:exchange_offer) { create(:exchange_offer, exchange_item: my_exchange_item) }
 
-        before { subject }
+        before { request }
 
-        it_behaves_like "Paginated response"
+        it_behaves_like 'Paginated response'
 
         it 'returns only exchange offers created by user' do
-          expect(JSON.parse(response.body)['records'][0].to_json).to eq(ExchangeOfferBlueprint.render_as_hash(my_exchange_offer).to_json)
-          expect(JSON.parse(response.body)['records'].count).to eq(1)
+          records = response.parsed_body['records']
+          expect(records[0].to_json).to eq(ExchangeOfferBlueprint.render_as_hash(my_exchange_offer).to_json)
+          expect(records.count).to eq(1)
         end
       end
 
@@ -67,13 +72,14 @@ RSpec.describe Api::ExchangeOffersController, type: :request do
         let!(:exchange_offer) { create(:exchange_offer, status: :accepted, user:) }
         let!(:other_exchange_offer) { create(:exchange_offer, status: :pending, user:) }
 
-        before { subject }
+        before { request }
 
-        it_behaves_like "Paginated response"
+        it_behaves_like 'Paginated response'
 
         it 'returns only exchange offers with provided status' do
-          expect(JSON.parse(response.body)['records'][0].to_json).to eq(ExchangeOfferBlueprint.render_as_hash(exchange_offer).to_json)
-          expect(JSON.parse(response.body)['records'].count).to eq(1)
+          records = response.parsed_body['records']
+          expect(records[0].to_json).to eq(ExchangeOfferBlueprint.render_as_hash(exchange_offer).to_json)
+          expect(records.count).to eq(1)
         end
       end
     end
@@ -83,7 +89,8 @@ RSpec.describe Api::ExchangeOffersController, type: :request do
     it_behaves_like 'protected endpoint', method: :get, url: '/api/exchange_offers/1.json'
 
     context 'when user is logged in' do
-      subject { get api_exchange_offer_path(exchange_offer), headers: headers }
+      subject(:request) { get api_exchange_offer_path(exchange_offer), headers: }
+
       let(:user) { create(:user) }
       let(:headers) { authenticated_headers({}, user) }
       let(:exchange_offer) { create(:exchange_offer) }
@@ -94,14 +101,14 @@ RSpec.describe Api::ExchangeOffersController, type: :request do
           exchange_item_id: exchange_offer.exchange_item_id,
           id: exchange_offer.id,
           updated_at: exchange_offer.updated_at,
-          user_id: exchange_offer.user_id,
+          user_id: exchange_offer.user_id
         }
       end
 
-      before { subject }
+      before { request }
 
       it 'returns 200' do
-        expect(response).to(have_http_status(200))
+        expect(response).to(have_http_status(:ok))
       end
 
       it 'returns exchange offer' do
@@ -114,12 +121,12 @@ RSpec.describe Api::ExchangeOffersController, type: :request do
     it_behaves_like 'protected endpoint', method: :post, url: '/api/exchange_offers.json'
 
     context 'when user is authenticated' do
-      subject { post api_exchange_offers_path, params: params, headers: authenticated_headers({}, user) }
+      subject(:request) { post api_exchange_offers_path, params:, headers: authenticated_headers({}, user) }
 
       context 'when exchange item does not exist' do
         let(:params) { { exchange_offer: { exchange_item_id: 1, description: Faker::Lorem.paragraph } } }
 
-        before { subject }
+        before { request }
 
         it_behaves_like 'response status', :unprocessable_entity
       end
@@ -128,7 +135,7 @@ RSpec.describe Api::ExchangeOffersController, type: :request do
         let(:exchange_item) { create(:exchange_item, user:) }
         let(:params) { { exchange_offer: { exchange_item_id: exchange_item.id, description: Faker::Lorem.paragraph } } }
 
-        before { subject }
+        before { request }
 
         # it 'test' do
         #   debugger
@@ -141,16 +148,18 @@ RSpec.describe Api::ExchangeOffersController, type: :request do
         let(:params) { { exchange_offer: { exchange_item_id: exchange_item.id, description: 'Really bad word' } } }
         let(:expected_response) do
           {
-            "errors" => ['Please do not use bad words in description, if this happens again your account will be blocked']
+            'errors' => [
+              'Please do not use bad words in description, if this happens again your account will be blocked'
+            ]
           }
         end
 
-        before { subject }
+        before { request }
 
         it_behaves_like 'response status', :unprocessable_entity
 
         it 'returns' do
-          expect(JSON.parse(response.body)).to eq(expected_response)
+          expect(response.parsed_body).to eq(expected_response)
         end
       end
 
@@ -159,12 +168,12 @@ RSpec.describe Api::ExchangeOffersController, type: :request do
         let(:params) { { exchange_offer: { exchange_item_id: exchange_item.id, description: Faker::Lorem.paragraph } } }
 
         it 'creates new exchange offer' do
-          expect { subject }.to change { ExchangeOffer.count }.by(1)
+          expect { subject }.to change(ExchangeOffer, :count).by(1)
         end
 
         it 'returns 201' do
           subject
-          expect(response).to(have_http_status(201))
+          expect(response).to(have_http_status(:created))
         end
       end
     end
@@ -174,27 +183,27 @@ RSpec.describe Api::ExchangeOffersController, type: :request do
     it_behaves_like 'protected endpoint', method: :delete, url: '/api/exchange_offers/1.json'
 
     context 'when user is authenticated' do
-      subject { delete api_exchange_offer_path(exchange_offer), headers: authenticated_headers({}, user) }
+      subject(:request) { delete api_exchange_offer_path(exchange_offer), headers: authenticated_headers({}, user) }
 
       context 'when user is not an owner of exchange item' do
         let(:exchange_offer) { create(:exchange_offer) }
 
-        before { subject }
+        before { request }
 
         it_behaves_like 'response status', :forbidden
       end
 
       context 'when user is an owner of exchange item' do
         let(:user) { create(:user) }
-        let!(:exchange_offer) { create(:exchange_offer, user: user) }
+        let!(:exchange_offer) { create(:exchange_offer, user:) }
 
         it 'deletes exchange offer' do
-          expect { subject }.to change { ExchangeOffer.count }.by(-1)
+          expect { subject }.to change(ExchangeOffer, :count).by(-1)
         end
 
         it 'returns 204' do
           subject
-          expect(response).to(have_http_status(204))
+          expect(response).to(have_http_status(:no_content))
         end
       end
     end
@@ -204,53 +213,58 @@ RSpec.describe Api::ExchangeOffersController, type: :request do
     it_behaves_like 'protected endpoint', method: :patch, url: '/api/exchange_offers/1/accept.json'
 
     context 'when user is authenticated' do
-      subject { patch accept_api_exchange_offer_path(exchange_offer), params:, headers: authenticated_headers({}, user) }
+      subject(:request) do
+        patch accept_api_exchange_offer_path(exchange_offer), params:, headers: authenticated_headers({}, user)
+      end
+
       let(:params) { {} }
 
       context 'when user is not an owner of exchange item' do
         let(:exchange_offer) { create(:exchange_offer, status: :pending) }
 
-        before { subject }
+        before { request }
 
         it_behaves_like 'response status', :forbidden
       end
 
       context 'when response_description is not provided' do
         let(:user) { create(:user) }
-        let(:exchange_item) { create(:exchange_item, user: user) }
+        let(:exchange_item) { create(:exchange_item, user:) }
         let!(:exchange_offer) { create(:exchange_offer, exchange_item:) }
 
-        before { subject }
+        before { request }
 
         it_behaves_like 'response status', :bad_request
       end
 
       context 'when response_description contain profanity', vcr: { cassette_name: 'moderation/flagged_message' } do
         let(:user) { create(:user) }
-        let(:exchange_item) { create(:exchange_item, user: user) }
+        let(:exchange_item) { create(:exchange_item, user:) }
         let!(:exchange_offer) { create(:exchange_offer, exchange_item:) }
         let(:expected_response) do
           {
-            "errors" => ['Please do not use bad words in description, if this happens again your account will be blocked']
+            'errors' => [
+              'Please do not use bad words in description, if this happens again your account will be blocked'
+            ]
           }
         end
 
         let(:params) { { exchange_offer: { response_description: 'Really bad word' } } }
 
-        before { subject }
+        before { request }
 
         it 'returns 422' do
-          expect(response).to(have_http_status(422))
+          expect(response).to(have_http_status(:unprocessable_entity))
         end
 
         it 'returns' do
-          expect(JSON.parse(response.body)).to eq(expected_response)
+          expect(response.parsed_body).to eq(expected_response)
         end
       end
 
       context 'when user is an owner of exchange item', vcr: { cassette_name: 'moderation/casual_message' } do
         let(:user) { create(:user) }
-        let(:exchange_item) { create(:exchange_item, user: user) }
+        let(:exchange_item) { create(:exchange_item, user:) }
         let!(:exchange_offer) { create(:exchange_offer, exchange_item:) }
 
         let(:params) { { exchange_offer: { response_description: Faker::Lorem.paragraph } } }
@@ -261,7 +275,7 @@ RSpec.describe Api::ExchangeOffersController, type: :request do
 
         it 'returns 200' do
           subject
-          expect(response).to(have_http_status(200))
+          expect(response).to(have_http_status(:ok))
         end
       end
     end
@@ -271,53 +285,57 @@ RSpec.describe Api::ExchangeOffersController, type: :request do
     it_behaves_like 'protected endpoint', method: :patch, url: '/api/exchange_offers/1/reject.json'
 
     context 'when user is authenticated' do
-      subject { patch reject_api_exchange_offer_path(exchange_offer), params:, headers: authenticated_headers({}, user) }
+      subject(:request) do
+        patch reject_api_exchange_offer_path(exchange_offer), params:, headers: authenticated_headers({}, user)
+      end
+
       let(:params) { {} }
 
       context 'when user is not an owner of exchange item' do
         let(:exchange_offer) { create(:exchange_offer) }
 
-        before { subject }
+        before { request }
 
         it_behaves_like 'response status', :forbidden
       end
 
       context 'when response_description is not provided' do
         let(:user) { create(:user) }
-        let(:exchange_item) { create(:exchange_item, user: user) }
+        let(:exchange_item) { create(:exchange_item, user:) }
         let!(:exchange_offer) { create(:exchange_offer, exchange_item:) }
 
-        before { subject }
+        before { request }
 
         it_behaves_like 'response status', :bad_request
       end
 
       context 'when response_description contain profanity', vcr: { cassette_name: 'moderation/flagged_message' } do
         let(:user) { create(:user) }
-        let(:exchange_item) { create(:exchange_item, user: user) }
+        let(:exchange_item) { create(:exchange_item, user:) }
         let!(:exchange_offer) { create(:exchange_offer, exchange_item:) }
         let(:expected_response) do
           {
-            "errors" => ['Please do not use bad words in description, if this happens again your account will be blocked']
+            'errors' =>
+              ['Please do not use bad words in description, if this happens again your account will be blocked']
           }
         end
 
         let(:params) { { exchange_offer: { response_description: 'Really bad word' } } }
 
-        before { subject }
+        before { request }
 
         it 'returns 422' do
-          expect(response).to(have_http_status(422))
+          expect(response).to(have_http_status(:unprocessable_entity))
         end
 
         it 'returns' do
-          expect(JSON.parse(response.body)).to eq(expected_response)
+          expect(response.parsed_body).to eq(expected_response)
         end
       end
 
       context 'when user is an owner of exchange item', vcr: { cassette_name: 'moderation/casual_message' } do
         let(:user) { create(:user) }
-        let(:exchange_item) { create(:exchange_item, user: user) }
+        let(:exchange_item) { create(:exchange_item, user:) }
         let!(:exchange_offer) { create(:exchange_offer, exchange_item:) }
 
         let(:params) { { exchange_offer: { response_description: Faker::Lorem.paragraph } } }
@@ -328,7 +346,7 @@ RSpec.describe Api::ExchangeOffersController, type: :request do
 
         it 'returns 200' do
           subject
-          expect(response).to(have_http_status(200))
+          expect(response).to(have_http_status(:ok))
         end
       end
     end
@@ -337,20 +355,22 @@ RSpec.describe Api::ExchangeOffersController, type: :request do
       it_behaves_like 'protected endpoint', method: :patch, url: '/api/exchange_offers/1/complete.json'
 
       context 'when user is authenticated' do
-        subject { patch complete_api_exchange_offer_path(exchange_offer), headers: authenticated_headers({}, user) }
+        subject(:request) do
+          patch complete_api_exchange_offer_path(exchange_offer), headers: authenticated_headers({}, user)
+        end
 
         context 'when user is not an owner of exchange offer' do
           let(:exchange_offer) { create(:exchange_offer) }
 
-          before { subject }
+          before { request }
 
           it_behaves_like 'response status', :forbidden
         end
 
         context 'when user is an owner of exchange offer' do
           let(:user) { create(:user) }
-          let!(:exchange_item) { create(:exchange_item, status: :active)}
-          let!(:exchange_offer) { create(:exchange_offer, user: user, status: :accepted, exchange_item:) }
+          let!(:exchange_item) { create(:exchange_item, status: :active) }
+          let!(:exchange_offer) { create(:exchange_offer, user:, status: :accepted, exchange_item:) }
 
           it 'completes exchange offer' do
             expect { subject }.to change { exchange_offer.reload.status }.from('accepted').to('completed')
@@ -362,7 +382,7 @@ RSpec.describe Api::ExchangeOffersController, type: :request do
 
           it 'returns 200' do
             subject
-            expect(response).to(have_http_status(200))
+            expect(response).to(have_http_status(:ok))
           end
         end
       end

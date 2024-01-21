@@ -1,29 +1,33 @@
+# frozen_string_literal: true
+
 Rails.application.routes.draw do
   devise_for :admins, controllers: { sessions: 'admins/sessions' }
   namespace :admin_administrate do
-      resources :users, only: [:create, :index, :update, :show, :new, :destroy, :edit]
-      # resources :achievements
-      resources :machines, only: [:create, :index, :update, :show, :new, :destroy, :edit]
-      resources :prizes, only: [:create, :index, :update, :show, :new, :destroy, :edit]
-      resources :purchases
-      resources :travel_sessions
-      resources :partners, only: [:create, :index, :update, :show, :new, :destroy, :edit]
-      resources :locations, only: [:create, :index, :update, :show, :new, :destroy, :edit]
-      # resources :user_achievements
-      resources :users_prizes
+    resources :users, only: %i[create index update show new destroy edit]
+    # resources :achievements
+    resources :machines, only: %i[create index update show new destroy edit]
+    resources :prizes, only: %i[create index update show new destroy edit]
+    resources :purchases
+    resources :travel_sessions
+    resources :partners, only: %i[create index update show new destroy edit]
+    resources :locations, only: %i[create index update show new destroy edit]
+    # resources :user_achievements
+    resources :users_prizes
 
-      root to: "users#index"
-    end
-  devise_for :users, controllers: { passwords: 'users/passwords', registrations: 'users/registrations', sessions: 'users/sessions' }
+    root to: 'users#index'
+  end
+  devise_for :users,
+             controllers: { passwords: 'users/passwords', registrations: 'users/registrations',
+                            sessions: 'users/sessions' }
   devise_scope :user do
     get '/users/me', to: 'users/sessions#show'
     get '/users/passwords/success', to: 'users/passwords#show'
   end
   namespace :api do
     resources :high_scores, only: [:index]
-    resources :tgtg_integrations, only: [:create, :update]
+    resources :tgtg_integrations, only: %i[create update]
     get '/tgtg_integration', to: 'tgtg_integrations#show'
-    resources :machines, only: [:index, :create]
+    resources :machines, only: %i[index create]
     resources :machine_handlers, only: [:create]
     patch '/machine_handlers', to: 'machine_handlers#update'
     delete '/machine_handlers', to: 'machine_handlers#destroy'
@@ -45,7 +49,7 @@ Rails.application.routes.draw do
         patch 'inactivate'
       end
     end
-    resources :exchange_offers, only: [:index, :show, :create, :destroy] do
+    resources :exchange_offers, only: %i[index show create destroy] do
       member do
         patch 'accept'
         patch 'reject'

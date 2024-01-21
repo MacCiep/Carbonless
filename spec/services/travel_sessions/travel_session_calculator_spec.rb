@@ -1,13 +1,16 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe TravelSessions::TravelSessionCalculator, type: :service do
   describe '#call' do
-    let!(:distance) { 10000 }
-    subject { TravelSessions::TravelSessionCalculator.new(distance).call }
+    subject(:service) { described_class.new(distance).call }
+
+    let!(:distance) { 10_000 }
 
     it 'returns correct appropriate values' do
-      expect(subject[:carbon_saved]).to eq(1.21)
-      expect(subject[:points]).to eq(100)
+      expect(service[:carbon_saved]).to eq(1.21)
+      expect(service[:points]).to eq(100)
     end
   end
 end

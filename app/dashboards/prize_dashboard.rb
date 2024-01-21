@@ -1,4 +1,6 @@
-require "administrate/base_dashboard"
+# frozen_string_literal: true
+
+require 'administrate/base_dashboard'
 
 class PrizeDashboard < Administrate::BaseDashboard
   # ATTRIBUTE_TYPES
@@ -12,7 +14,7 @@ class PrizeDashboard < Administrate::BaseDashboard
     duration: Field::Number,
     price: Field::Number,
     title: Field::String,
-    partner: Field::BelongsTo,
+    partner: Field::BelongsTo
   }.freeze
 
   # COLLECTION_ATTRIBUTES

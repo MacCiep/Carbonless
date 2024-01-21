@@ -1,0 +1,19 @@
+exclude_paths:
+  - config/**/*
+  - db/*/*
+  - vendor/**/*
+  - app/models/concerns/moderation_lockable.rb
+
+detectors:
+  IrresponsibleModule:
+    enabled: false
+  UncommunicativeModuleName:
+    enabled: false
+  UncommunicativeMethodName:
+    enabled: false
+  InstanceVariableAssumption:
+    enabled: false
+  TooManyStatements:
+    max_statements: 12
+  UtilityFunction:
+    enabled: false

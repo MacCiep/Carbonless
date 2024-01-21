@@ -1,7 +1,10 @@
+# frozen_string_literal: true
+
 module TgtgMicroservice
   module Requests
     class RefreshAccess
       attr_reader :user
+
       ENDPOINT = 'authorize'
 
       def initialize(user)
@@ -9,9 +12,10 @@ module TgtgMicroservice
       end
 
       def call
-        return if user.tgtg_id
+        tgtg_id = user.tgtg_id
+        return if tgtg_id
 
-        response = Faraday.put("#{ENV['TGTG_MICROSERVICE_URL']}/#{ENDPOINT}/#{user.tgtg_id}")
+        response = Faraday.put("#{ENV.fetch('TGTG_MICROSERVICE_URL', nil)}/#{ENDPOINT}/#{tgtg_id}")
 
         response.status == 200
       end

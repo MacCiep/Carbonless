@@ -1,6 +1,7 @@
+# frozen_string_literal: true
+
 module Api
   class HighScoresController < ApiController
-
     def index
       render json: UserBlueprint.render_as_hash(
         current_user,
@@ -13,12 +14,17 @@ module Api
 
     private
 
+    # :reek:FeatureEnvy
     def scope_users
-      users = User
-      if params[:scope] == 'city' && params[:scope_value].present?
-        users = users.where(city: params[:scope_value])
-      elsif params[:scope] == 'country' && params[:scope_value].present?
-        users = users.where(country: params[:scope_value])
+      users = User.all
+      scope = params[:scope]
+      scope_value = params[:scope_value]
+      if scope_value.present?
+        if scope == 'city'
+          users = users.where(city: scope_value)
+        elsif scope == 'country'
+          users = users.where(country: scope_value)
+        end
       end
 
       users.order(score: :desc).limit(5)

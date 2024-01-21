@@ -1,13 +1,16 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe TravelSessions::DestinationValidator, type: :service do
   let!(:user) { create(:user) }
   let!(:machine) { create(:machine, :travel) }
-  let!(:travel_session) { create(:travel_session, :inactive, user: user, machine: machine) }
+  let!(:travel_session) { create(:travel_session, :inactive, user:, machine:) }
 
   describe '#call' do
-    let(:validator) { TravelSessions::DestinationValidator.new(machine, expires, travel_session) }
     subject { validator.call }
+
+    let(:validator) { described_class.new(machine, expires, travel_session) }
 
     describe 'when current session is not present' do
       let!(:travel_session) { nil }
@@ -18,7 +21,7 @@ RSpec.describe TravelSessions::DestinationValidator, type: :service do
         end
 
         it 'returns false' do
-          is_expected.to eq(false)
+          expect(subject).to be(false)
         end
       end
     end
@@ -30,7 +33,7 @@ RSpec.describe TravelSessions::DestinationValidator, type: :service do
         end
 
         it 'returns true' do
-          is_expected.to eq(true)
+          expect(subject).to be(true)
         end
       end
 
@@ -40,7 +43,7 @@ RSpec.describe TravelSessions::DestinationValidator, type: :service do
         end
 
         it 'returns true' do
-          is_expected.to eq(false)
+          expect(subject).to be(false)
         end
       end
 
@@ -50,7 +53,7 @@ RSpec.describe TravelSessions::DestinationValidator, type: :service do
         end
 
         it 'returns true' do
-          is_expected.to eq(false)
+          expect(subject).to be(false)
         end
       end
 
@@ -61,7 +64,7 @@ RSpec.describe TravelSessions::DestinationValidator, type: :service do
 
         it 'returns true' do
           allow(DateTime).to receive(:now).and_return(DateTime.now + 89.minutes)
-          is_expected.to eq(true)
+          expect(subject).to be(true)
         end
       end
 
@@ -72,7 +75,7 @@ RSpec.describe TravelSessions::DestinationValidator, type: :service do
 
         it 'returns false' do
           allow(DateTime).to receive(:now).and_return(DateTime.now + 91.minutes)
-          is_expected.to eq(false)
+          expect(subject).to be(false)
         end
       end
     end

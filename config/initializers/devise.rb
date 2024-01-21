@@ -17,6 +17,7 @@ Devise.setup do |config|
   # config.secret_key = '03aae96a1e32d35cd291f81440ba4dcbd345dd147a96eda52b4f762dcb70873234c4994c17b15e5eb5fbc1df7a7fd5ffa6153c396c48704f8798391d3763c586'
   config.jwt do |jwt|
     jwt.secret = ENV['DEVISE_JWT_SECRET_KEY']
+    jwt.expiration_time = ENV.fetch('DEVISE_JWT_EXPIRATION_TIME', '3600').to_i
     jwt.dispatch_requests = [
       ['POST', %r{^/users/sign_in([.]json)?$}],
       ['POST', %r{^/users([.]json)?$}]

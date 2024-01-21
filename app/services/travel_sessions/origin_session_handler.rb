@@ -1,4 +1,7 @@
+# frozen_string_literal: true
+
 module TravelSessions
+  # :reek:TooManyInstanceVariables
   class OriginSessionHandler
     def initialize(params, user, machine)
       @expires = params[:expires]
@@ -9,14 +12,15 @@ module TravelSessions
     end
 
     def call
-      return Resonad.Failure('Session is already in progress') if user.travel_sessions.active.present?
+      users_travel_sessions = user.travel_sessions
+      return Resonad.Failure('Session is already in progress') if users_travel_sessions.active.present?
 
       return Resonad.Failure('Request is invalid') unless OriginValidator.new(machine, expires).call
 
-      travel_session = user.travel_sessions.build(machine: machine,
-                                                  active: true,
-                                                  start_latitude: start_latitude,
-                                                  start_longitude: start_longitude)
+      travel_session = users_travel_sessions.build(machine:,
+                                                   active: true,
+                                                   start_latitude:,
+                                                   start_longitude:)
       if travel_session.save
         Resonad.Success(travel_session)
       else

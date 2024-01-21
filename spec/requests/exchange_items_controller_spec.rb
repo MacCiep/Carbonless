@@ -1,13 +1,16 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-RSpec.describe Api::ExchangeItemsController, type: :request do
+RSpec.describe Api::ExchangeItemsController do
   let(:user) { create(:user) }
 
   describe 'GET #index' do
     it_behaves_like 'protected endpoint', method: :get, url: '/api/exchange_items.json'
 
     context 'when user is logged in' do
-      subject { get api_exchange_items_path, params:, headers: headers }
+      subject { get api_exchange_items_path, params:, headers: }
+
       let(:headers) { authenticated_headers({}, user) }
 
       context 'when no params are passed' do
@@ -19,10 +22,10 @@ RSpec.describe Api::ExchangeItemsController, type: :request do
           subject
         end
 
-        it_behaves_like "Paginated response"
+        it_behaves_like 'Paginated response'
 
         it 'returns only active exchange items' do
-          expect(JSON.parse(response.body)['records'].count).to eq(1)
+          expect(response.parsed_body['records'].count).to eq(1)
         end
       end
 
@@ -32,14 +35,14 @@ RSpec.describe Api::ExchangeItemsController, type: :request do
         let(:params) { { user_id: user.id } }
 
         before do
-          create(:exchange_item, status: :active, user: user)
+          create(:exchange_item, status: :active, user:)
           create(:exchange_item, status: :active)
           subject
         end
 
         it 'returns exchange items of user' do
-          expect(JSON.parse(response.body)['records'].first['user_id']).to eq(user.id)
-          expect(JSON.parse(response.body)['records'].count).to eq(1)
+          expect(response.parsed_body['records'].first['user_id']).to eq(user.id)
+          expect(response.parsed_body['records'].count).to eq(1)
         end
       end
     end
@@ -49,7 +52,8 @@ RSpec.describe Api::ExchangeItemsController, type: :request do
     it_behaves_like 'protected endpoint', method: :get, url: '/api/exchange_items/1.json'
 
     context 'when user is logged in' do
-      subject { get api_exchange_item_path(exchange_item), headers: headers }
+      subject { get api_exchange_item_path(exchange_item), headers: }
+
       let(:user) { create(:user) }
       let(:headers) { authenticated_headers({}, user) }
       let(:exchange_item) { create(:exchange_item) }
@@ -67,7 +71,7 @@ RSpec.describe Api::ExchangeItemsController, type: :request do
       before { subject }
 
       it 'returns 200' do
-        expect(response).to(have_http_status(200))
+        expect(response).to(have_http_status(:ok))
       end
 
       it 'returns exchange item' do
@@ -80,13 +84,15 @@ RSpec.describe Api::ExchangeItemsController, type: :request do
     it_behaves_like 'protected endpoint', method: :post, url: '/api/exchange_items.json'
 
     context 'when user is authenticated' do
-      subject { post api_exchange_items_path, params: params, headers: authenticated_headers({}, user) }
+      subject { post api_exchange_items_path, params:, headers: authenticated_headers({}, user) }
 
       context 'when message includes profanity', vcr: { cassette_name: 'moderation/flagged_message' } do
         let(:params) { { exchange_item: { name: Faker::Books.name, description: 'Really bad word' } } }
         let(:expected_response) do
           {
-            "errors" => ['Please do not use bad words in description, if this happens again your account will be blocked']
+            'errors' => [
+              'Please do not use bad words in description, if this happens again your account will be blocked'
+            ]
           }
         end
 
@@ -95,7 +101,7 @@ RSpec.describe Api::ExchangeItemsController, type: :request do
         it_behaves_like 'response status', :unprocessable_entity
 
         it 'returns' do
-          expect(JSON.parse(response.body)).to eq(expected_response)
+          expect(response.parsed_body).to eq(expected_response)
         end
       end
 
@@ -103,21 +109,21 @@ RSpec.describe Api::ExchangeItemsController, type: :request do
         let(:params) { { exchange_item: { name: Faker::Books.name, description: Faker::Lorem.paragraph } } }
 
         it 'creates new exchange item' do
-          expect { subject }.to change { ExchangeItem.count }.by(1)
+          expect { subject }.to change(ExchangeItem, :count).by(1)
         end
 
         it 'returns 201' do
           subject
-          expect(response).to(have_http_status(201))
+          expect(response).to(have_http_status(:created))
         end
       end
     end
   end
 
   describe 'DELETE #destroy' do
-    it_behaves_like 'protected endpoint', method: :delete, url: "/api/exchange_items/1.json"
-
     subject { delete api_exchange_item_path(exchange_item), headers: authenticated_headers({}, user) }
+
+    it_behaves_like 'protected endpoint', method: :delete, url: '/api/exchange_items/1.json'
 
     context 'when user is authenticated' do
       context 'when user is not an owner of exchange item' do
@@ -126,7 +132,7 @@ RSpec.describe Api::ExchangeItemsController, type: :request do
         before { subject }
 
         it 'returns 403' do
-          expect(response).to(have_http_status(403))
+          expect(response).to(have_http_status(:forbidden))
         end
       end
 
@@ -135,22 +141,22 @@ RSpec.describe Api::ExchangeItemsController, type: :request do
 
         it 'returns 204' do
           subject
-          expect(response).to(have_http_status(204))
+          expect(response).to(have_http_status(:no_content))
         end
 
         it 'deletes exchange item' do
-          expect { subject }.to change { ExchangeItem.count }.by(-1)
+          expect { subject }.to change(ExchangeItem, :count).by(-1)
         end
       end
     end
   end
 
   describe 'PATCH #update' do
-    it_behaves_like 'protected endpoint', method: :patch, url: "/api/exchange_items/1.json"
-
-    subject { patch api_exchange_item_path(exchange_item), params: params, headers: authenticated_headers({}, user) }
+    subject { patch api_exchange_item_path(exchange_item), params:, headers: authenticated_headers({}, user) }
 
     let(:params) { { exchange_item: { name: 'New name' } } }
+
+    it_behaves_like 'protected endpoint', method: :patch, url: '/api/exchange_items/1.json'
 
     context 'when user is authenticated' do
       context 'when user is not an owner of exchange item' do
@@ -159,7 +165,7 @@ RSpec.describe Api::ExchangeItemsController, type: :request do
         before { subject }
 
         it 'returns 403' do
-          expect(response).to(have_http_status(403))
+          expect(response).to(have_http_status(:forbidden))
         end
       end
 
@@ -168,7 +174,7 @@ RSpec.describe Api::ExchangeItemsController, type: :request do
 
         it 'returns 200' do
           subject
-          expect(response).to(have_http_status(200))
+          expect(response).to(have_http_status(:ok))
         end
 
         it 'updates exchange item' do
@@ -179,9 +185,9 @@ RSpec.describe Api::ExchangeItemsController, type: :request do
   end
 
   describe 'PATCH #activate' do
-    it_behaves_like 'protected endpoint', method: :patch, url: "/api/exchange_items/1/activate.json"
-
     subject { patch activate_api_exchange_item_path(exchange_item), headers: authenticated_headers({}, user) }
+
+    it_behaves_like 'protected endpoint', method: :patch, url: '/api/exchange_items/1/activate.json'
 
     context 'when user is authenticated' do
       context 'when user is not an owner of exchange item' do
@@ -190,7 +196,7 @@ RSpec.describe Api::ExchangeItemsController, type: :request do
         before { subject }
 
         it 'returns 403' do
-          expect(response).to(have_http_status(403))
+          expect(response).to(have_http_status(:forbidden))
         end
       end
 
@@ -199,7 +205,7 @@ RSpec.describe Api::ExchangeItemsController, type: :request do
 
         it 'returns 200' do
           subject
-          expect(response).to(have_http_status(200))
+          expect(response).to(have_http_status(:ok))
         end
 
         it 'updates exchange item' do
@@ -210,9 +216,9 @@ RSpec.describe Api::ExchangeItemsController, type: :request do
   end
 
   describe 'PATCH #cancel' do
-    it_behaves_like 'protected endpoint', method: :patch, url: "/api/exchange_items/1/cancel.json"
-
     subject { patch cancel_api_exchange_item_path(exchange_item), headers: authenticated_headers({}, user) }
+
+    it_behaves_like 'protected endpoint', method: :patch, url: '/api/exchange_items/1/cancel.json'
 
     context 'when user is authenticated' do
       context 'when user is not an owner of exchange item' do
@@ -221,7 +227,7 @@ RSpec.describe Api::ExchangeItemsController, type: :request do
         before { subject }
 
         it 'returns 403' do
-          expect(response).to(have_http_status(403))
+          expect(response).to(have_http_status(:forbidden))
         end
       end
 
@@ -230,7 +236,7 @@ RSpec.describe Api::ExchangeItemsController, type: :request do
 
         it 'returns 200' do
           subject
-          expect(response).to(have_http_status(200))
+          expect(response).to(have_http_status(:ok))
         end
 
         it 'updates exchange item' do
@@ -241,9 +247,9 @@ RSpec.describe Api::ExchangeItemsController, type: :request do
   end
 
   describe 'PATCH #inactivate' do
-    it_behaves_like 'protected endpoint', method: :patch, url: "/api/exchange_items/1/inactivate.json"
-
     subject { patch inactivate_api_exchange_item_path(exchange_item), headers: authenticated_headers({}, user) }
+
+    it_behaves_like 'protected endpoint', method: :patch, url: '/api/exchange_items/1/inactivate.json'
 
     context 'when user is authenticated' do
       context 'when user is not an owner of exchange item' do
@@ -252,7 +258,7 @@ RSpec.describe Api::ExchangeItemsController, type: :request do
         before { subject }
 
         it 'returns 403' do
-          expect(response).to(have_http_status(403))
+          expect(response).to(have_http_status(:forbidden))
         end
       end
 
@@ -261,7 +267,7 @@ RSpec.describe Api::ExchangeItemsController, type: :request do
 
         it 'returns 200' do
           subject
-          expect(response).to(have_http_status(200))
+          expect(response).to(have_http_status(:ok))
         end
 
         it 'updates exchange item' do

@@ -1,13 +1,16 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe TravelSessions::OriginValidator, type: :service do
   let!(:user) { create(:user) }
   let!(:machine) { create(:machine, :travel) }
-  let!(:travel_session) { create(:travel_session, :inactive, user: user, machine: machine) }
+  let!(:travel_session) { create(:travel_session, :inactive, user:, machine:) }
 
   describe '#call' do
-    let!(:validator) { TravelSessions::OriginValidator.new(machine, expires) }
     subject { validator.call }
+
+    let!(:validator) { described_class.new(machine, expires) }
 
     context 'when expiration is in correct time box' do
       let!(:expires) do
@@ -15,7 +18,7 @@ RSpec.describe TravelSessions::OriginValidator, type: :service do
       end
 
       it 'returns true' do
-        is_expected.to eq(true)
+        expect(subject).to be(true)
       end
     end
 
@@ -25,7 +28,7 @@ RSpec.describe TravelSessions::OriginValidator, type: :service do
       end
 
       it 'returns true' do
-        is_expected.to eq(false)
+        expect(subject).to be(false)
       end
     end
 
@@ -35,7 +38,7 @@ RSpec.describe TravelSessions::OriginValidator, type: :service do
       end
 
       it 'returns true' do
-        is_expected.to eq(false)
+        expect(subject).to be(false)
       end
     end
 
@@ -46,7 +49,7 @@ RSpec.describe TravelSessions::OriginValidator, type: :service do
 
       it 'returns true' do
         allow(DateTime).to receive(:now).and_return(DateTime.now + 89.minutes)
-        is_expected.to eq(true)
+        expect(subject).to be(true)
       end
     end
 
@@ -57,7 +60,7 @@ RSpec.describe TravelSessions::OriginValidator, type: :service do
 
       it 'returns false' do
         allow(DateTime).to receive(:now).and_return(DateTime.now + 91.minutes)
-        is_expected.to eq(false)
+        expect(subject).to be(false)
       end
     end
   end
